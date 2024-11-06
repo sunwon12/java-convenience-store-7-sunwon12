@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum PromotionType {
 
-    NONE("해당안됨"),
+    NONE(""),
     TWO_PLUS_ONE("탄산2+1"),
     FLASH_SALE("반짝할인"),
     MD_RECOMMENDED("MD추천상품");
@@ -20,5 +20,9 @@ public enum PromotionType {
                 .filter(promotionType -> promotionType.description.equals(description))
                 .findFirst()
                 .orElse(PromotionType.NONE);
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
