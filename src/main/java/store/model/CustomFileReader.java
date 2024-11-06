@@ -17,19 +17,19 @@ public class CustomFileReader {
         try {
             Path path = Paths.get(PRODUCTS_FILE);
             if (!Files.exists(path)) {
-                throw new IllegalArgumentException("프로모션 목록을 불러오는데 실패했습니다.");
+                throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_FILE_PATH.getMessage());
             }
             List<String> lines = Files.readAllLines(path);
 
             return parseProducts(lines);
         } catch (IOException e) {
-            throw new IllegalArgumentException("상품 목록을 불러오는데 실패했습니다.", e);
+            throw new IllegalArgumentException(ErrorMessage.FAILED_LOAD_PRODUCT_FILE.getMessage());
         }
     }
 
     private List<ProductDto> parseProducts(List<String> lines) {
         if (!lines.get(0).equals(HEADER)) {
-            throw new IllegalArgumentException("상품 목록 파일의 형식이 올바르지 않습니다.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_PRODUCT_FORMAT.getMessage());
         }
 
         List<ProductDto> products = new ArrayList<>();
@@ -53,18 +53,18 @@ public class CustomFileReader {
         try {
             Path path = Paths.get(PROMOTIONS_FILE);
             if (!Files.exists(path)) {
-                throw new IllegalArgumentException("프로모션 목록을 불러오는데 실패했습니다.");
+                throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_FILE_PATH.getMessage());
             }
             List<String> lines = Files.readAllLines(path);
             return parsePromotions(lines);
         } catch (IOException e) {
-            throw new IllegalArgumentException("프로모션 목록을 불러오는데 실패했습니다.", e);
+            throw new IllegalArgumentException(ErrorMessage.FAILED_LOAD_PROMOTION_FILE.getMessage());
         }
     }
 
     private List<PromotionDto> parsePromotions(List<String> lines) {
         if (!lines.get(0).equals(PROMOTION_HEADER)) {
-            throw new IllegalArgumentException("프로모션 목록 파일의 형식이 올바르지 않습니다.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_PRODUCT_FORMAT.getMessage());
         }
 
         List<PromotionDto> promotions = new ArrayList<>();
