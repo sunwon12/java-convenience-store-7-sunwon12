@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import store.model.product.PromotionType;
 
 public class CustomFileReader {
     private static final String PRODUCTS_FILE = "src/main/resources/products.md";
@@ -13,7 +14,7 @@ public class CustomFileReader {
     private static final String HEADER = "name,price,quantity,promotionType";
     private static final String PROMOTION_HEADER = "name,buy,get,start_date,end_date";
 
-    public List<ProductDto> loadProducts() {
+    public List<StockProductDto> loadProducts() {
         try {
             Path path = Paths.get(PRODUCTS_FILE);
             if (!Files.exists(path)) {
@@ -27,25 +28,25 @@ public class CustomFileReader {
         }
     }
 
-    private List<ProductDto> parseProducts(List<String> lines) {
+    private List<StockProductDto> parseProducts(List<String> lines) {
         if (!lines.get(0).equals(HEADER)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_PRODUCT_FORMAT.getMessage());
         }
 
-        List<ProductDto> products = new ArrayList<>();
+        List<StockProductDto> products = new ArrayList<>();
         for (int i = 1; i < lines.size(); i++) {
             products.add(parseProductLine(lines.get(i)));
         }
         return products;
     }
 
-    private ProductDto parseProductLine(String line) {
+    private StockProductDto parseProductLine(String line) {
         String[] parts = line.split(",");
-        return new ProductDto(
+        return  StockProductDto.of(
                 parts[0],
                 Integer.parseInt(parts[1]),
                 Integer.parseInt(parts[2]),
-                parts[3].equals("null") ? null : parts[3]
+                PromotionType.from(parts[3])
         );
     }
 

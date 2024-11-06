@@ -6,8 +6,9 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.model.CustomFileReader;
-import store.model.ProductDto;
+import store.model.StockProductDto;
 import store.model.PromotionDto;
+import store.model.product.PromotionType;
 
 class CustomFileReaderTest {
 
@@ -16,13 +17,13 @@ class CustomFileReaderTest {
     @Test
     @DisplayName("상품 목록 파일을 읽어서 ProductsDto로 변환한다")
     void loadProducts() {
-        List<ProductDto> productDtos = customFileReader.loadProducts();
+        List<StockProductDto> stockProductDtos = customFileReader.loadProducts();
 
-        assertThat(productDtos).hasSize(16);
+        assertThat(stockProductDtos).hasSize(16);
 
-        assertThat(productDtos.get(0))
+        assertThat(stockProductDtos.get(0))
                 .extracting("name", "price", "quantity", "promotionType")
-                .containsExactly("콜라", 1000, 10, "탄산2+1");
+                .containsExactly("콜라", 1000, 10, PromotionType.TWO_PLUS_ONE);
     }
 
     @Test
