@@ -9,14 +9,15 @@ import java.util.List;
 import store.model.product.PromotionType;
 
 public class CustomFileReader {
-    private static final String PRODUCTS_FILE = "src/main/resources/products.md";
-    private static final String PROMOTIONS_FILE = "src/main/resources/promotions.md";
-    private static final String HEADER = "name,price,quantity,promotionType";
-    private static final String PROMOTION_HEADER = "name,buy,get,start_date,end_date";
+
+    private static final String PRODUCTS_FILE_PATH = "src/main/resources/products.md";
+    private static final String PROMOTIONS_FILE_PATH = "src/main/resources/promotions.md";
+    private static final String PRODUCT_FILE_HEADER = "name,price,quantity,promotion";
+    private static final String PROMOTION_FILE_HEADER = "name,buy,get,start_date,end_date";
 
     public List<StockProductDto> loadProducts() {
         try {
-            Path path = Paths.get(PRODUCTS_FILE);
+            Path path = Paths.get(PRODUCTS_FILE_PATH);
             if (!Files.exists(path)) {
                 throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_FILE_PATH.getMessage());
             }
@@ -29,7 +30,7 @@ public class CustomFileReader {
     }
 
     private List<StockProductDto> parseProducts(List<String> lines) {
-        if (!lines.get(0).equals(HEADER)) {
+        if (!lines.get(0).equals(PRODUCT_FILE_HEADER)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_PRODUCT_FORMAT.getMessage());
         }
 
@@ -52,7 +53,7 @@ public class CustomFileReader {
 
     public List<PromotionDto> loadPromotions() {
         try {
-            Path path = Paths.get(PROMOTIONS_FILE);
+            Path path = Paths.get(PROMOTIONS_FILE_PATH);
             if (!Files.exists(path)) {
                 throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_FILE_PATH.getMessage());
             }
@@ -64,7 +65,7 @@ public class CustomFileReader {
     }
 
     private List<PromotionDto> parsePromotions(List<String> lines) {
-        if (!lines.get(0).equals(PROMOTION_HEADER)) {
+        if (!lines.get(0).equals(PROMOTION_FILE_HEADER)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_PRODUCT_FORMAT.getMessage());
         }
 
