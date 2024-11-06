@@ -43,7 +43,7 @@ public class CustomFileReader {
 
     private StockProductDto parseProductLine(String line) {
         String[] parts = line.split(",");
-        return  StockProductDto.of(
+        return new StockProductDto(
                 parts[0],
                 Integer.parseInt(parts[1]),
                 Integer.parseInt(parts[2]),

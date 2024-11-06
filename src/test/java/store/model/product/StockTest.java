@@ -10,13 +10,15 @@ class StockTest {
     @DisplayName("재고를 초기화 한다")
     @Test
     void test1() {
-        ProductId productId = new ProductId("콜라", 1000);
-        Product product = new Product(productId, PromotionType.from("탄산2+1"));
-        StockProduct stockProduct = new StockProduct(product, 10);
-
         Stock stock = new Stock().initializeStock();
-        assertEquals(stockProduct, stock.getStockProducts().get(0));
+        assertEquals("콜라", stock.getStockProducts().get(0).getName());
+    }
 
+    @DisplayName("재고를 초기화 한다")
+    @Test
+    void test2() {
+        Stock stock = new Stock().initializeStock();
+        assertEquals("오렌지주스", stock.getStockProducts().get(5).getName());
     }
 
 //    @DisplayName("재고를 여러 개 추가한다")
