@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import store.model.CustomFileReader;
 import store.model.ErrorMessage;
-import store.model.StockProductDto;
+import store.model.dto.StockProductDto;
 
 public class Stock {
 
@@ -26,8 +26,8 @@ public class Stock {
                     dto.name(), dto.price(), dto.count(), dto.promotionType());
             products.add(stockProduct);
         }
-        addZeroNormalProducts(products);
-        this.stockProducts = products;
+        List<StockProduct> productsWithZeroNomal = addZeroNormalProducts(products);
+        this.stockProducts = productsWithZeroNomal;
     }
 
     private List<StockProduct> addZeroNormalProducts(List<StockProduct> originalProducts) {

@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import store.model.dto.PromotionDto;
+import store.model.dto.StockProductDto;
 import store.model.product.PromotionType;
 
 public class CustomFileReader {

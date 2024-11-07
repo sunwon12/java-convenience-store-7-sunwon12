@@ -1,4 +1,4 @@
-package store.model;
+package store.model.dto;
 
 import store.model.product.PromotionType;
 

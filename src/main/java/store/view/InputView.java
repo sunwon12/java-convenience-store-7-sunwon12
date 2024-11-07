@@ -4,7 +4,7 @@ import static camp.nextstep.edu.missionutils.Console.readLine;
 
 import java.util.ArrayList;
 import java.util.List;
-import store.OrderProductInfoRequest;
+import store.model.dto.OrderProductInfoRequest;
 
 public class InputView {
 
