@@ -2,12 +2,12 @@ package store.model.product;
 
 public class Product {
 
-    private final ProductName productName;
+    private final ProductName name;
     private final Money price;
     private final Promotion promotion;
 
-    public Product(ProductName productName, Money price, Promotion promotion) {
-        this.productName = productName;
+    public Product(ProductName name, Money price, Promotion promotion) {
+        this.name = name;
         this.price = price;
         this.promotion = promotion;
     }
