@@ -9,7 +9,9 @@ public enum ErrorMessage {
     FAILED_LOAD_PRODUCT_FILE("상품 목록을 불러오는데 실패했습니다."),
     FAILED_LOAD_PROMOTION_FILE("프로모션 목록을 불러오는데 실패했습니다."),
     INVALID_FILE_PRODUCT_FORMAT("상품 목록 파일의 형식이 올바르지 않습니다."),
-    INVALID_FILE_PROMOTION_FORMAT("프로모션 목록 파일의 형식이 올바르지 않습니다.");
+    INVALID_FILE_PROMOTION_FORMAT("프로모션 목록 파일의 형식이 올바르지 않습니다."),
+    NOT_FOUND_PRODUCT("존재하지 않는 상품입니다. 다시 입력해 주세요."),
+    NOT_ENOUGH_PRODUCT("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
 
     private static final String ERROR_PREFIX = "[Error] ";
     private String message;

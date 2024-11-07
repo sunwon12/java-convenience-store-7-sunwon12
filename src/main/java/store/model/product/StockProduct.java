@@ -14,6 +14,35 @@ public class StockProduct {
         this.promotionType = promotionType;
     }
 
+
+    public StockProduct deepCopy() {
+        return new StockProduct(
+                this.name,
+                this.price,
+                this.count,
+                this.promotionType
+        );
+    }
+
+    public void updateCount(int count) {
+        this.count = count;
+    }
+
+    public void minusCount(int count) {
+        this.count -= count;
+    }
+
+    public boolean isSameProduct(String productName) {
+        return name.equals(productName);
+    }
+
+    public boolean isPromotion() {
+        return this.promotionType != PromotionType.NONE;
+    }
+
+    public boolean hasProduct() {
+        return this.count > 0;
+    }
     public String getName() {
         return name;
     }
@@ -28,6 +57,11 @@ public class StockProduct {
 
     public int getCount() {
         return count;
+    }
+
+    public boolean isSameNameAndPromotionType(StockProduct other) {
+        return this.name.equals(other.getName())
+                && this.promotionType.equals(other.getPromotionType());
     }
 }
 

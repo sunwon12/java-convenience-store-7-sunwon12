@@ -1,65 +1,71 @@
 package store.model.product;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class StockTest {
 
+    Stock stock;
+
+    @BeforeEach
+    void setUp() {
+        stock = new Stock();
+        stock.initializeStock();
+    }
+
     @DisplayName("재고를 초기화 한다")
     @Test
     void test1() {
-        Stock stock = new Stock().initializeStock();
         assertEquals("콜라", stock.getStockProducts().get(0).getName());
     }
 
     @DisplayName("재고를 초기화 한다")
     @Test
     void test2() {
-        Stock stock = new Stock().initializeStock();
-        assertEquals("오렌지주스", stock.getStockProducts().get(5).getName());
+        assertEquals("오렌지주스", stock.getStockProducts().get(4).getName());
     }
 
-//    @DisplayName("재고를 여러 개 추가한다")
-//    @Test
-//    void test11() {
-//        ProductId productId = new ProductId("iceCream", 1_000);
-//        Product product1 = new Product(productId, PromotionType.MD_RECOMMENDED);
-//        Product product2 = new Product(productId, PromotionType.NONE);
-//        StockProduct stockProduct1 = new StockProduct(product1, 1);
-//        StockProduct stockProduct2 = new StockProduct(product2, 1);
-//
-//        Stock stock = new Stock(List.of(stockProduct1, stockProduct2));
-//
-//        assertEquals(2, stock.getProductKindCount());
-//    }
-//
-//
-//    @DisplayName("재고를 추가한다")
-//    @Test
-//    void test1() {
-//        ProductId productId = new ProductId("iceCream", 1_000);
-//        Product product1 = new Product(productId, PromotionType.MD_RECOMMENDED);
-//        StockProduct stockProduct = new StockProduct(product1, 1);
-//        Stock stock = new Stock();
-//
-//        Stock stockWithProduct = stock.addProduct(stockProduct);
-//
-//        assertEquals(1, stockWithProduct.getProductKindCount());
-//    }
-//
-//    @DisplayName("재고 목록을 반환한다")
-//    @Test
-//    void test2() {
-//        ProductId productId = new ProductId("iceCream", 1_000);
-//        Product product1 = new Product(productId, PromotionType.MD_RECOMMENDED);
-//        StockProduct stockProduct = new StockProduct(product1, 1);
-//        Stock stock = new Stock();
-//        Stock stockWithProduct = stock.addProduct(stockProduct);
-//
-//        List<StockProduct> stockProducts = stockWithProduct.getStockProducts();
-//
-//        assertEquals(List.of(stockProduct), stockProducts);
-//    }
+
+    @DisplayName("창고에서 제품을 꺼낸다")
+    @Test
+    void test3() {
+        List<StockProduct> stockProduct = stock.giveProduct("콜라", 1);
+        assertEquals("콜라", stockProduct.get(0).getName());
+    }
+
+    @DisplayName("존재하지 않는 상품을 꺼낼 시 예외를 반환한다")
+    @Test
+    void test4() {
+        assertThrows(IllegalArgumentException.class, () ->
+                stock.giveProduct("존재하지 않는 상품", 1)
+        );
+    }
+
+    @DisplayName("재고가 부족한 상품을 꺼낼 시 예외를 반환한다")
+    @Test
+    void test5() {
+        assertThrows(IllegalArgumentException.class, () ->
+                stock.giveProduct("콜라", 1000)
+        );
+    }
+
+    @DisplayName("프로모션 재고를 우선시해서 꺼낸다")
+    @Test
+    void test6() {
+        List<StockProduct> stockProducts = stock.giveProduct("콜라", 10);
+        assertEquals(PromotionType.TWO_PLUS_ONE, stockProducts.get(0).getPromotionType());
+    }
+
+    @DisplayName("프로모션 재고가 부족시 일반 재고를 꺼낸다")
+    @Test
+    void test7() {
+        List<StockProduct> stockProducts = stock.giveProduct("콜라", 15);
+        assertEquals(PromotionType.TWO_PLUS_ONE, stockProducts.get(0).getPromotionType());
+        assertEquals(PromotionType.NONE, stockProducts.get(1).getPromotionType());
+    }
 }
