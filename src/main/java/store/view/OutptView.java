@@ -1,7 +1,7 @@
 package store.view;
 
 import java.util.List;
-import store.model.product.StockProduct;
+import store.model.product.Product;
 
 public class OutptView {
 
@@ -14,29 +14,29 @@ public class OutptView {
     public void printWelcome() {
         System.out.println(WELCOME);
     }
-    public void printProductInfo(List<StockProduct> products) {
-        for (StockProduct stockProduct : products) {
-            if (stockProduct.getCount() == 0) {
-                printProductInfoWithOutCount(stockProduct);
+    public void printProductInfo(List<Product> products) {
+        for (Product product : products) {
+            if (product.getCount() == 0) {
+                printProductInfoWithOutCount(product);
             }
-            if (stockProduct.getCount() != 0) {
-                printProductInfo(stockProduct);
+            if (product.getCount() != 0) {
+                printProductInfo(product);
             }
         }
     }
 
-    private void printProductInfoWithOutCount(StockProduct stockProduct) {
+    private void printProductInfoWithOutCount(Product product) {
         System.out.printf(PRODUCT_INFO,
-                stockProduct.getName(),
-                stockProduct.getPrice(),
-                stockProduct.getPromotionType().getDescription());
+                product.getName(),
+                product.getPrice(),
+                product.getPromotionType().getDescription());
     }
 
-    private void printProductInfo(StockProduct stockProduct) {
+    private void printProductInfo(Product product) {
         System.out.printf(PRODUCT_INFO_WITH_COUNT,
-                stockProduct.getName(),
-                stockProduct.getPrice(),
-                stockProduct.getCount(),
-                stockProduct.getPromotionType().getDescription());
+                product.getName(),
+                product.getPrice(),
+                product.getCount(),
+                product.getPromotionType().getDescription());
     }
 }

@@ -34,8 +34,8 @@ class StockTest {
     @DisplayName("창고에서 제품을 꺼낸다")
     @Test
     void test3() {
-        List<StockProduct> stockProduct = stock.giveProduct("콜라", 1);
-        assertEquals("콜라", stockProduct.getFirst().getName());
+        List<Product> product = stock.giveProduct("콜라", 1);
+        assertEquals("콜라", product.getFirst().getName());
     }
 
     @DisplayName("존재하지 않는 상품을 꺼낼 시 예외를 반환한다")
@@ -57,15 +57,15 @@ class StockTest {
     @DisplayName("프로모션 재고를 우선시해서 꺼낸다")
     @Test
     void test6() {
-        List<StockProduct> stockProducts = stock.giveProduct("콜라", 10);
-        assertEquals(PromotionType.TWO_PLUS_ONE, stockProducts.getFirst().getPromotionType());
+        List<Product> products = stock.giveProduct("콜라", 10);
+        assertEquals(PromotionType.TWO_PLUS_ONE, products.getFirst().getPromotionType());
     }
 
     @DisplayName("프로모션 재고가 부족시 일반 재고를 꺼낸다")
     @Test
     void test7() {
-        List<StockProduct> stockProducts = stock.giveProduct("콜라", 15);
-        assertEquals(PromotionType.TWO_PLUS_ONE, stockProducts.get(0).getPromotionType());
-        assertEquals(PromotionType.NONE, stockProducts.get(1).getPromotionType());
+        List<Product> products = stock.giveProduct("콜라", 15);
+        assertEquals(PromotionType.TWO_PLUS_ONE, products.get(0).getPromotionType());
+        assertEquals(PromotionType.NONE, products.get(1).getPromotionType());
     }
 }

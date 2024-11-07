@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import store.model.dto.OrderProductInfoRequest;
 import store.model.product.Stock;
-import store.model.product.StockProduct;
+import store.model.product.Product;
 
 public class StoreService {
 
@@ -16,7 +16,7 @@ public class StoreService {
         this.shoppingCart = new ShoppingCart(this.stock);
     }
 
-    public List<StockProduct> initializeStock() {
+    public List<Product> initializeStock() {
         stock.initializeStock();
         return stock.getStockProducts();
     }

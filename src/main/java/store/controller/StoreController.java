@@ -5,7 +5,7 @@ import java.util.Map;
 import store.model.ShoppingCart;
 import store.model.StoreService;
 import store.model.dto.OrderProductInfoRequest;
-import store.model.product.StockProduct;
+import store.model.product.Product;
 import store.view.InputView;
 import store.view.OutptView;
 
@@ -29,7 +29,7 @@ public class StoreController {
     private ShoppingCart order() {
         outptView.printWelcome();
 
-        List<StockProduct> products = storeService.initializeStock();
+        List<Product> products = storeService.initializeStock();
         outptView.printProductInfo(products);
 
         List<OrderProductInfoRequest> requests = inputView.readProductNameAndCount();

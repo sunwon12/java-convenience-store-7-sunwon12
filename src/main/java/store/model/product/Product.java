@@ -1,13 +1,13 @@
 package store.model.product;
 
-public class StockProduct {
+public class Product {
 
     private String name;
     private int price;
     private int count;
     private PromotionType promotionType;
 
-    public StockProduct(String name, int price, int count, PromotionType promotionType) {
+    public Product(String name, int price, int count, PromotionType promotionType) {
         this.name = name;
         this.price = price;
         this.count = count;
@@ -15,8 +15,8 @@ public class StockProduct {
     }
 
 
-    public StockProduct deepCopy() {
-        return new StockProduct(
+    public Product deepCopy() {
+        return new Product(
                 this.name,
                 this.price,
                 this.count,
@@ -59,7 +59,7 @@ public class StockProduct {
         return count;
     }
 
-    public boolean isSameNameAndPromotionType(StockProduct other) {
+    public boolean isSameNameAndPromotionType(Product other) {
         return this.name.equals(other.getName())
                 && this.promotionType.equals(other.getPromotionType());
     }
@@ -68,7 +68,7 @@ public class StockProduct {
         return promotionType.calculateMissingPromotionCount(count);
     }
 
-    public void plus(StockProduct other) {
+    public void plus(Product other) {
         this.count += other.count;
     }
 
