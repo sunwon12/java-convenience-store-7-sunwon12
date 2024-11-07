@@ -1,6 +1,7 @@
 package store.model.product;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,13 @@ class StockProductTest {
     @Test
     void test2() {
         assertTrue(stockProduct.isSameProduct("아이스크림"));
+    }
+
+    @DisplayName("놓친 프로모션 개수를 반환한다")
+    @Test
+    void test3() {
+        int count = stockProduct.countMissingPromotionCount();
+        assertEquals(1,count);
     }
 
 

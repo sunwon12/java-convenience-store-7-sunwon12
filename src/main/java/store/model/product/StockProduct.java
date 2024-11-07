@@ -63,5 +63,15 @@ public class StockProduct {
         return this.name.equals(other.getName())
                 && this.promotionType.equals(other.getPromotionType());
     }
+
+    public int countMissingPromotionCount() {
+        return promotionType.calculateMissingPromotionCount(count);
+    }
+
+    public void plus(StockProduct other) {
+        this.count += other.count;
+    }
+
+
 }
 

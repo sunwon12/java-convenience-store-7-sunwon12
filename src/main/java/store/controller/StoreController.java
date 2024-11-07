@@ -1,6 +1,8 @@
 package store.controller;
 
 import java.util.List;
+import java.util.Map;
+import store.model.ShoppingCart;
 import store.model.StoreService;
 import store.model.dto.OrderProductInfoRequest;
 import store.model.product.StockProduct;
@@ -9,9 +11,9 @@ import store.view.OutptView;
 
 public class StoreController {
 
-    private StoreService storeService;
-    private InputView inputView;
-    private OutptView outptView;
+    private final StoreService storeService;
+    private final InputView inputView;
+    private final OutptView outptView;
 
     public StoreController(StoreService storeService, InputView inputView, OutptView outptView) {
         this.storeService = storeService;
@@ -20,18 +22,30 @@ public class StoreController {
     }
 
     public void process() {
-        order();
+        ShoppingCart cart = order();
+        ShoppingCart cartWithMissing = takeMissingPromotion(cart);
     }
 
-    private void order() {
+    private ShoppingCart order() {
         outptView.printWelcome();
 
-        List<StockProduct> stockProducts = storeService.initializeStock();
-        outptView.printProductInfo(stockProducts);
+        List<StockProduct> products = storeService.initializeStock();
+        outptView.printProductInfo(products);
 
         List<OrderProductInfoRequest> requests = inputView.readProductNameAndCount();
-        storeService.addInCart(requests);
+        return storeService.addInCart(requests);
     }
+
+    private ShoppingCart takeMissingPromotion(ShoppingCart shoppingCart) {
+        Map<String, Integer> missingPromotion = storeService.findMissingPromotions(shoppingCart);
+        for (Map.Entry<String, Integer> entry : missingPromotion.entrySet()) {
+            String input = inputView.readMissingPromotionResponse(entry.getKey(), entry.getValue());
+            shoppingCart = storeService.takeMissingPromotion(shoppingCart, input);
+        }
+        return shoppingCart;
+    }
+
 }
+
 
 
