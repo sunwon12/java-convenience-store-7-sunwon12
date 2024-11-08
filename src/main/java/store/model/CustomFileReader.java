@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import store.model.dto.PromotionDto;
 import store.model.dto.StockDto;
+import store.model.dto.StockDtos;
 import store.model.product.PromotionType;
 
 public class CustomFileReader {
@@ -17,7 +18,7 @@ public class CustomFileReader {
     private static final String PRODUCT_FILE_HEADER = "name,price,quantity,promotion";
     private static final String PROMOTION_FILE_HEADER = "name,buy,get,start_date,end_date";
 
-    public List<StockDto> loadProducts() {
+    public StockDtos loadProducts() {
         try {
             Path path = Paths.get(PRODUCTS_FILE_PATH);
             if (!Files.exists(path)) {
@@ -25,14 +26,14 @@ public class CustomFileReader {
             }
             List<String> lines = Files.readAllLines(path);
 
-            return parseProducts(lines);
+            return StockDtos.from(parseProducts(lines));
         } catch (IOException e) {
             throw new IllegalArgumentException(ErrorMessage.FAILED_LOAD_PRODUCT_FILE.getMessage());
         }
     }
 
     private List<StockDto> parseProducts(List<String> lines) {
-        if (!lines.get(0).equals(PRODUCT_FILE_HEADER)) {
+        if (!lines.getFirst().equals(PRODUCT_FILE_HEADER)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_PRODUCT_FORMAT.getMessage());
         }
 
@@ -67,7 +68,7 @@ public class CustomFileReader {
     }
 
     private List<PromotionDto> parsePromotions(List<String> lines) {
-        if (!lines.get(0).equals(PROMOTION_FILE_HEADER)) {
+        if (!lines.getFirst().equals(PROMOTION_FILE_HEADER)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_PRODUCT_FORMAT.getMessage());
         }
 

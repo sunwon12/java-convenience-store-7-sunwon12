@@ -1,13 +1,15 @@
-package store.view;
+package store.view.InputView;
 
 import static camp.nextstep.edu.missionutils.Console.readLine;
 
 import java.util.ArrayList;
 import java.util.List;
 import store.model.dto.OrderProductInfoRequest;
+import store.view.SimpleValidator;
 
 public class InputView {
 
+    private static final String BRACKET = "[\\[\\]]";
     private static final String REQUEST_PRODUCT_NAME_COUNT = "구매하실 상품명과 수량을 입력해 주세요. (예: [사이다-2],[감자칩-1])";
     private static final String REQUEST_MISSING_PROMOTION = "현재 %s은(는) %d개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)%n";
     private static final String REQUEST_PURCHASING_WITHOUT_PROMOTION = "현재 %s %d개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)%n";
@@ -26,6 +28,7 @@ public class InputView {
         validator.validateProductNameAndCount(input);
         return parseProductNameAndCount(input);
     }
+
     private List<OrderProductInfoRequest> parseProductNameAndCount(String input) {
         List<OrderProductInfoRequest> products = new ArrayList<>();
         String[] items = splitByComma(input);
@@ -47,7 +50,7 @@ public class InputView {
     }
 
     private String removeSquareBrackets(String item) {
-        return item.trim().replaceAll("[\\[\\]]", "");
+        return item.trim().replaceAll(BRACKET, "");
     }
 
     private OrderProductInfoRequest splitNameAndQuantity(String cleanItem) {
