@@ -1,5 +1,6 @@
 package store.model.dto;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,7 +14,11 @@ import store.model.product.Stock;
 public record StockDtos(Map<String, List<StockDto>> groupedProducts) {
     public static StockDtos from(List<StockDto> dtos) {
         return new StockDtos(dtos.stream()
-                .collect(Collectors.groupingBy(StockDto::name)));
+                .collect(Collectors.groupingBy(
+                        StockDto::name,
+                        () -> new LinkedHashMap<>(),
+                        Collectors.toUnmodifiableList()
+                )));
     }
 
     public Stock toStock(String name) {
@@ -25,7 +30,7 @@ public record StockDtos(Map<String, List<StockDto>> groupedProducts) {
         Quantity promotionalQuantity = createPromotionalQuantity(promotionalDto);
         Quantity normalQuantity = createNormalQuantity(normalDto);
         PromotionType promotionType = createPromotionType(promotionalDto);
-        return new Stock(new Product(productName, price, promotionType),promotionalQuantity, normalQuantity);
+        return new Stock(new Product(productName, price), promotionalQuantity, normalQuantity, promotionType);
     }
 
     private Money createPrice(StockDto promotionalDto, StockDto normalDto) {

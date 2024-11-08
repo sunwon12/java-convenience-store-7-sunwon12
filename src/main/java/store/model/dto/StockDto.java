@@ -10,8 +10,7 @@ public record StockDto(String name, int price, int quantity, PromotionType promo
     public Product toProduct() {
         return new Product(
                 new ProductName(name),
-                new Money(quantity),
-                promotionType
+                new Money(quantity)
         );
     }
 }

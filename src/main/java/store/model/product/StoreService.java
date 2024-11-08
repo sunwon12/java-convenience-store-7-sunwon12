@@ -14,4 +14,8 @@ public class StoreService {
     public void initiallizeStocks() {
         stocks.initialize(new CustomFileReader());
     }
+
+    public Stocks getPrintStocks() {
+        return stocks;
+    }
 }

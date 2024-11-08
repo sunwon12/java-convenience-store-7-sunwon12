@@ -1,22 +1,19 @@
 package store.model.product;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import store.model.CustomFileReader;
-import store.model.dto.StockDto;
 import store.model.dto.StockDtos;
 
 public class Stocks {
     private Map<ProductName, Stock> stocks;
 
     public Stocks() {
-        this.stocks = new HashMap<>();
+        this.stocks = new LinkedHashMap<>();
     }
 
     public void initialize(CustomFileReader customFileReader) {
-        List<StockDto> stockDtos = customFileReader.loadProducts();
-        StockDtos dtos = StockDtos.from(stockDtos);
+        StockDtos dtos = customFileReader.loadProducts();
         dtos.groupedProducts()
                 .keySet()
                 .forEach(name -> stocks.put(
@@ -27,5 +24,9 @@ public class Stocks {
 
     public boolean hasStock(ProductName productName) {
         return stocks.containsKey(productName);
+    }
+
+    public Map<ProductName, Stock> getStocks() {
+        return stocks;
     }
 }

@@ -38,4 +38,9 @@ public enum PromotionType {
     public boolean isPromotion() {
         return this != NONE;
     }
+
+    @Override
+    public String toString() {
+        return description;
+    }
 }

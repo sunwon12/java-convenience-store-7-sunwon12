@@ -1,9 +1,9 @@
 package store;
 
 import store.controller.StoreController;
-import store.view.InputView;
-import store.view.OutputView;
+import store.view.InputView.InputView;
 import store.view.SimpleValidator;
+import store.view.outputView.OutputView;
 
 public class Application {
     public static void main(String[] args) {

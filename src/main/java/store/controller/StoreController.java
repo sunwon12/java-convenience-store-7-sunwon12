@@ -1,8 +1,9 @@
 package store.controller;
 
+import store.model.product.Stocks;
 import store.model.product.StoreService;
-import store.view.InputView;
-import store.view.OutputView;
+import store.view.InputView.InputView;
+import store.view.outputView.OutputView;
 
 public class StoreController {
 
@@ -17,10 +18,13 @@ public class StoreController {
     }
 
     public void process() {
-        outputView.printWelcome();
         service.initiallizeStocks();
+        showStocks();
+    }
 
-
+    private void showStocks() {
+        Stocks stocks = service.getPrintStocks();
+        outputView.showStocks(stocks);
     }
 }
 

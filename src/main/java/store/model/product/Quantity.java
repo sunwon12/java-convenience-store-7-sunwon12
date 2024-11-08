@@ -62,8 +62,12 @@ public class Quantity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Quantity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Quantity)) {
+            return false;
+        }
         Quantity quantity = (Quantity) o;
         return value == quantity.value;
     }
@@ -75,7 +79,10 @@ public class Quantity {
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        if(value == 0) {
+            return "재고 없음";
+        }
+        return String.valueOf(value) + "개";
     }
 
     public Quantity remainder(int divisor) {
