@@ -4,12 +4,12 @@ public class Product {
 
     private final ProductName name;
     private final Money price;
-    private final Promotion promotion;
+    private final PromotionType promotionType;
 
-    public Product(ProductName name, Money price, Promotion promotion) {
+    public Product(ProductName name, Money price, PromotionType promotionType) {
         this.name = name;
         this.price = price;
-        this.promotion = promotion;
+        this.promotionType = promotionType;
     }
 }
 

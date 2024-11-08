@@ -1,35 +1,41 @@
 package store.model.product;
 
 import java.util.Arrays;
-import java.util.function.ToIntFunction;
-
+import java.util.function.Function;
 public enum PromotionType {
-
-    NONE("", count -> 0),
-    TWO_PLUS_ONE("탄산2+1", count -> count % 3 == 2 ? 1 : 0),
-    FLASH_SALE("반짝할인", count -> count % 2 == 1 ? 1 : 0),
-    MD_RECOMMENDED("MD추천상품", count -> count % 2 == 1 ? 1 : 0);
+    NONE("", quantity -> 0),
+    TWO_PLUS_ONE("탄산2+1", quantity -> quantity / 3),
+    MD_RECOMMENDED("MD추천상품", quantity -> quantity / 2),
+    FLASH_SALE("반짝할인", quantity -> quantity / 2);
 
     private final String description;
-    private final ToIntFunction<Integer> calculator;
+    private final Function<Integer, Integer> freeQuantityCalculator;
 
-    PromotionType(String description, ToIntFunction<Integer> calculator) {
+    PromotionType(String description, Function<Integer, Integer> freeQuantityCalculator) {
         this.description = description;
-        this.calculator = calculator;
+        this.freeQuantityCalculator = freeQuantityCalculator;
+    }
+
+    public int calculateFreeQuantity(int quantity) {
+        return freeQuantityCalculator.apply(quantity);
+    }
+
+    public boolean isApplicable(int quantity) {
+        return this != NONE && quantity >= 2;
     }
 
     public static PromotionType from(String description) {
-        return Arrays.stream(PromotionType.values())
-                .filter(promotionType -> promotionType.description.equals(description))
+        return Arrays.stream(values())
+                .filter(type -> type.description.equals(description))
                 .findFirst()
-                .orElse(PromotionType.NONE);
+                .orElse(NONE);
     }
 
     public String getDescription() {
         return description;
     }
 
-    public int calculateMissingPromotionCount(int itemCount) {
-        return calculator.applyAsInt(itemCount);
+    public boolean isPromotion() {
+        return this != NONE;
     }
 }

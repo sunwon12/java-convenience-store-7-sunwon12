@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import store.model.dto.PromotionDto;
-import store.model.dto.StockProductDto;
+import store.model.dto.StockDto;
 import store.model.product.PromotionType;
 
 public class CustomFileReader {
@@ -17,7 +17,7 @@ public class CustomFileReader {
     private static final String PRODUCT_FILE_HEADER = "name,price,quantity,promotion";
     private static final String PROMOTION_FILE_HEADER = "name,buy,get,start_date,end_date";
 
-    public List<StockProductDto> loadProducts() {
+    public List<StockDto> loadProducts() {
         try {
             Path path = Paths.get(PRODUCTS_FILE_PATH);
             if (!Files.exists(path)) {
@@ -31,21 +31,21 @@ public class CustomFileReader {
         }
     }
 
-    private List<StockProductDto> parseProducts(List<String> lines) {
+    private List<StockDto> parseProducts(List<String> lines) {
         if (!lines.get(0).equals(PRODUCT_FILE_HEADER)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_PRODUCT_FORMAT.getMessage());
         }
 
-        List<StockProductDto> products = new ArrayList<>();
+        List<StockDto> products = new ArrayList<>();
         for (int i = 1; i < lines.size(); i++) {
             products.add(parseProductLine(lines.get(i)));
         }
         return products;
     }
 
-    private StockProductDto parseProductLine(String line) {
+    private StockDto parseProductLine(String line) {
         String[] parts = line.split(",");
-        return new StockProductDto(
+        return new StockDto(
                 parts[0],
                 Integer.parseInt(parts[1]),
                 Integer.parseInt(parts[2]),

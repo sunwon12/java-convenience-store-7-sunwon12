@@ -1,22 +1,19 @@
 package store.model.product;
 
-import java.util.ArrayList;
-import java.util.List;
-import store.model.CustomFileReader;
-import store.model.dto.StockProductDto;
-
 public class Stock {
+    private final Product product;
+    private Quantity promotionalQuantity;
+    private Quantity normalQuantity;
 
-    private List<Product> products;
-
-    public Stock() {
-        this.products = new ArrayList<>();
+    public Stock(Product product, Quantity normalQuantity) {
+        this.product =product;
+        this.normalQuantity = normalQuantity;
+        this.promotionalQuantity = Quantity.ZERO;
     }
 
-    /**
-     * 파일에서 물건 목록을 가져와 창고에 넣어준다
-     */
-    public void initializeStock() {
-        List<StockProductDto> stockProductDtos = new CustomFileReader().loadProducts();
+    public Stock(Product product,Quantity promotionalQuantity, Quantity normalQuantity) {
+        this.product =product;
+        this.normalQuantity = normalQuantity;
+        this.promotionalQuantity = promotionalQuantity;
     }
 }
