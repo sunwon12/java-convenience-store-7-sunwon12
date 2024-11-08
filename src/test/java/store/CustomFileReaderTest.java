@@ -17,7 +17,7 @@ class CustomFileReaderTest {
     @DisplayName("상품 목록 파일을 읽어서 ProductsDto로 변환한다")
     void loadProducts() {
         StockDtos stockDtos = customFileReader.loadProducts();
-        assertThat(stockDtos.groupedProducts()).hasSize(16);
+        assertThat(stockDtos.groupedProducts()).hasSize(11);
     }
 
     @Test

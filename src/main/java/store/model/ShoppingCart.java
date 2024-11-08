@@ -2,21 +2,22 @@ package store.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import store.model.product.Product;
-import store.model.product.Stock;
+import store.model.product.ReleasedProduct;
 
 public class ShoppingCart {
 
-    private final Stock stock;
-    private List<Product> products;
+    private List<ReleasedProduct> products;
 
-    public ShoppingCart(Stock stock) {
-        this.stock = stock;
+    public ShoppingCart() {
         this.products = new ArrayList<>();
     }
 
-    public ShoppingCart(Stock stock, List<Product> products) {
-        this.stock = stock;
+    public ShoppingCart(List<ReleasedProduct> products) {
         this.products = new ArrayList<>(products);
+    }
+
+    public List<ReleasedProduct> add(List<ReleasedProduct> products) {
+        this.products.addAll(products);
+        return products;
     }
 }

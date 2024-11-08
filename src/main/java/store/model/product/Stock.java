@@ -6,11 +6,29 @@ public class Stock {
     private Quantity normalQuantity;
     private final PromotionType promotionType;
 
-    public Stock(Product product,Quantity promotionalQuantity, Quantity normalQuantity, PromotionType promotionType) {
-        this.product =product;
+    public Stock(Product product, Quantity promotionalQuantity, Quantity normalQuantity, PromotionType promotionType) {
+        this.product = product;
         this.normalQuantity = normalQuantity;
         this.promotionalQuantity = promotionalQuantity;
         this.promotionType = promotionType;
+    }
+
+    public ReleasedProduct release(Quantity requestedQuantity) {
+        Quantity promotion = calculatePromotionalQuantity(requestedQuantity);
+        Quantity normal = requestedQuantity.subtract(promotion);
+
+        return new ReleasedProduct(
+                product,
+                promotion,
+                normal
+        );
+    }
+
+    private Quantity calculatePromotionalQuantity(Quantity requestedQuantity) {
+        if (promotionalQuantity.isGreaterThanOrEqual(requestedQuantity)) {
+            return requestedQuantity;
+        }
+        return promotionalQuantity;
     }
 
     public int getPrice() {
@@ -31,5 +49,20 @@ public class Stock {
 
     public boolean hasPromotion() {
         return !promotionalQuantity.isZero();
+    }
+
+    public boolean hasEnoughStock(Quantity quantity) {
+        if (promotionalQuantity.isGreaterThan(quantity)){
+            return true;
+        }
+        Quantity subtract = quantity.subtract(promotionalQuantity);
+        if(normalQuantity.isLessThan(subtract)){
+            return false;
+        }
+        return true;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 }
