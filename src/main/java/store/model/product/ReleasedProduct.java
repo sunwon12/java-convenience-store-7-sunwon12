@@ -14,4 +14,10 @@ public record ReleasedProduct(Product product, Quantity promotionQuantity,
     public Quantity getTotalQuantity() {
         return normalQuantity.add(promotionQuantity);
     }
+
+    public ReleasedProduct subtract(ReleasedProduct removingProduct) {
+        Quantity promotion = promotionQuantity.subtract(removingProduct.promotionQuantity);
+        Quantity normal = normalQuantity.subtract(removingProduct.normalQuantity);
+        return new ReleasedProduct(product, promotion, normal, promotionType);
+    }
 }

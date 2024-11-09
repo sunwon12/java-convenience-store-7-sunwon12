@@ -1,11 +1,13 @@
-package store.model.product;
+package store.model;
 
 
 import java.util.List;
 import java.util.Map;
-import store.model.CustomFileReader;
-import store.model.ShoppingCart;
 import store.model.dto.OrderProductInfoRequest;
+import store.model.product.ProductName;
+import store.model.product.Quantity;
+import store.model.product.ReleasedProduct;
+import store.model.product.Stocks;
 
 public class StoreService {
 
@@ -45,7 +47,7 @@ public class StoreService {
         return stocks.validateQuantity(productName, quantity);
     }
 
-//    public void backProduct(Map<ProductName, Quantity> nonPromotions) {
-//        stocks.add(nonPromotions);
-//    }
+    public void subtractFromCart(Map.Entry<ProductName, ReleasedProduct> nonPromotions) {
+        shoppingCart.subtract(nonPromotions);
+    }
 }

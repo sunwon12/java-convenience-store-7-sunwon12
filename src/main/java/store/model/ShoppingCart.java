@@ -3,6 +3,7 @@ package store.model;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import store.model.product.ProductName;
 import store.model.product.Quantity;
@@ -76,5 +77,15 @@ public class ShoppingCart {
                 releasedProduct.getCantPromotionQuantity(),
                 releasedProduct.normalQuantity(),
                 releasedProduct.promotionType());
+    }
+
+
+    public void subtract(Entry<ProductName, ReleasedProduct> subtract1) {
+        ProductName productName = subtract1.getKey();
+        ReleasedProduct subtractProduct = subtract1.getValue();
+
+        ReleasedProduct releasedProduct = products.get(productName);
+        ReleasedProduct newProduct = releasedProduct.subtract(subtractProduct);
+        products.put(productName, newProduct);
     }
 }

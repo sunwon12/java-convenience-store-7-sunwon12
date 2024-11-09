@@ -69,12 +69,4 @@ public class Stocks {
     public Map<ProductName, Stock> getStocks() {
         return stocks;
     }
-
-//    public void add(Map<ProductName, Quantity> nonPromotions) {
-//        nonPromotions.entrySet().stream()
-//                .forEach(entry -> {
-//                    Stock stock = stocks.get(entry.getKey());
-//                    stock.
-//                });
-//    }
 }
