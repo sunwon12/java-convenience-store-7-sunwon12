@@ -53,7 +53,7 @@ public class ShoppingCart {
     /**
      * 프로모션 상품을 가지고 있는데, 프로모션 상품이 적용이 안되는 상품 개수를 반환한다
      */
-    public Map<ProductName, Quantity> calculateNonPromotionQuantity() {
+    public Map<ProductName, ReleasedProduct> calculateNonPromotionQuantity() {
         return products.entrySet().stream()
                 .filter(this::hasNonPromotionQuantity)
                 .collect(Collectors.toMap(
@@ -69,8 +69,12 @@ public class ShoppingCart {
                 && !product.promotionType().canAllPromotionQuantity(promotionQuantity);
     }
 
-    private Quantity calculateNonPromotionQuantity(Map.Entry<ProductName, ReleasedProduct> entry) {
-        ReleasedProduct product = entry.getValue();
-        return product.normalQuantity().add(product.getCantPromotionQuantity());
+    private ReleasedProduct calculateNonPromotionQuantity(Map.Entry<ProductName, ReleasedProduct> entry) {
+        ReleasedProduct releasedProduct = entry.getValue();
+        ProductName productName = entry.getKey();
+        return new ReleasedProduct(releasedProduct.product(),
+                releasedProduct.getCantPromotionQuantity(),
+                releasedProduct.normalQuantity(),
+                releasedProduct.promotionType());
     }
 }

@@ -11,4 +11,7 @@ public record ReleasedProduct(Product product, Quantity promotionQuantity,
         return promotionType.calculateCantPromotionQuantity(promotionQuantity);
     }
 
+    public Quantity getTotalQuantity() {
+        return normalQuantity.add(promotionQuantity);
+    }
 }

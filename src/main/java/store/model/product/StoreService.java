@@ -36,7 +36,7 @@ public class StoreService {
         shoppingCart.add(releasedProducts);
     }
 
-    public Map<ProductName, Quantity> calculateNonPromotionQuantity() {
+    public Map<ProductName, ReleasedProduct> calculateNonPromotionQuantity() {
         return shoppingCart.calculateNonPromotionQuantity();
     }
 
@@ -44,4 +44,8 @@ public class StoreService {
     public boolean checkEnoughStock(ProductName productName, Quantity quantity) {
         return stocks.validateQuantity(productName, quantity);
     }
+
+//    public void backProduct(Map<ProductName, Quantity> nonPromotions) {
+//        stocks.add(nonPromotions);
+//    }
 }

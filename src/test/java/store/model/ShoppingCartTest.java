@@ -58,9 +58,9 @@ class ShoppingCartTest {
         products.put(productName, new ReleasedProduct(new Product(productName, new Money(1000)), new Quantity(5), new Quantity(10), PromotionType.TWO_PLUS_ONE));
         cart.add(products);
 
-        Map<ProductName, Quantity> cantPromotion = cart.calculateNonPromotionQuantity();
+        Map<ProductName, ReleasedProduct> cantPromotion = cart.calculateNonPromotionQuantity();
 
         assertTrue(cantPromotion.containsKey(productName));
-        assertEquals(new Quantity(12), cantPromotion.get(productName));
+        assertEquals(new Quantity(12), cantPromotion.get(productName).getTotalQuantity());
     }
 }

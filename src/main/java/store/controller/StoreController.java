@@ -5,6 +5,7 @@ import java.util.Map;
 import store.model.dto.OrderProductInfoRequest;
 import store.model.product.ProductName;
 import store.model.product.Quantity;
+import store.model.product.ReleasedProduct;
 import store.model.product.Stocks;
 import store.model.product.StoreService;
 import store.view.InputView.InputView;
@@ -57,11 +58,14 @@ public class StoreController {
     }
 
     private void readPurchaseWithoutPromotion() {
-        Map<ProductName, Quantity> productNameQuantityMap = service.calculateNonPromotionQuantity();
-        for (Map.Entry<ProductName, Quantity> entry : productNameQuantityMap.entrySet()) {
+        Map<ProductName, ReleasedProduct> nonPromotions = service.calculateNonPromotionQuantity();
+        for (Map.Entry<ProductName, ReleasedProduct> entry : nonPromotions.entrySet()) {
             ProductName productName = entry.getKey();
-            Quantity quantity = entry.getValue();
-            String nonPromotionalPurchaseResponse = inputView.readPurchaseWithoutPromotionResponse(productName.getName(), quantity.getValue());
+            ReleasedProduct releasedProduct = entry.getValue();
+            String response = inputView.readPurchaseWithoutPromotionResponse(productName.getName(), releasedProduct.getTotalQuantity().getValue());
+//            if(response.equals("N")) {
+//                service.backProduct(nonPromotions);
+//            }
         }
     }
 }
