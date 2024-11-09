@@ -1,5 +1,7 @@
 package store.model.product;
 
+import store.model.ErrorMessage;
+
 class StockStatus {
 
     private final Quantity promotionalQuantity;
@@ -16,8 +18,8 @@ class StockStatus {
         return getTotalQuantity().isGreaterThanOrEqual(requestedQuantity);
     }
 
-    public boolean hasInsufficientPromotionalStock() {
-        return promotionalQuantity.isLessThan(requestedQuantity);
+    private Quantity getTotalQuantity() {
+        return promotionalQuantity.add(normalQuantity);
     }
 
     public Quantity getPromotionalAvailable() {
@@ -34,13 +36,13 @@ class StockStatus {
         return requestedQuantity.subtract(promotionalQuantity);
     }
 
-    private Quantity getTotalQuantity() {
-        return promotionalQuantity.add(normalQuantity);
+    private boolean hasInsufficientPromotionalStock() {
+        return promotionalQuantity.isLessThan(requestedQuantity);
     }
 
-    private void validateStock() {
+    public void validateStock() {
         if (!hasEnoughStock()) {
-            throw new IllegalArgumentException("재고가 부족합니다.");
+            throw new IllegalArgumentException(ErrorMessage.NOT_ENOUGH_PRODUCT.getMessage());
         }
     }
 }

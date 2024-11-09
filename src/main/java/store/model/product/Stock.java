@@ -14,22 +14,20 @@ public class Stock {
     }
 
     public ReleasedProduct release(Quantity requestedQuantity) {
-        Quantity promotion = calculatePromotionalQuantity(requestedQuantity);
-        Quantity normal = requestedQuantity.subtract(promotion);
+        validateQuantity(requestedQuantity);
+        StockStatus stockStatus = new StockStatus(promotionalQuantity, normalQuantity, requestedQuantity);
 
         return new ReleasedProduct(
                 product,
-                promotion,
-                normal,
+                stockStatus.getPromotionalAvailable(),
+                stockStatus.getNormalRequired(),
                 promotionType
         );
     }
 
-    private Quantity calculatePromotionalQuantity(Quantity requestedQuantity) {
-        if (promotionalQuantity.isGreaterThanOrEqual(requestedQuantity)) {
-            return requestedQuantity;
-        }
-        return promotionalQuantity;
+    private void validateQuantity(Quantity requestedQuantity) {
+        StockStatus stockStatus = new StockStatus(promotionalQuantity, normalQuantity, requestedQuantity);
+        stockStatus.validateStock();
     }
 
     public int getPrice() {
@@ -52,15 +50,9 @@ public class Stock {
         return !promotionalQuantity.isZero();
     }
 
-    public boolean hasEnoughStock(Quantity quantity) {
-        if (promotionalQuantity.isGreaterThan(quantity)){
-            return true;
-        }
-        Quantity subtract = quantity.subtract(promotionalQuantity);
-        if(normalQuantity.isLessThan(subtract)){
-            return false;
-        }
-        return true;
+    public boolean hasEnoughStock(Quantity requestedQuantity) {
+        StockStatus stockStatus = new StockStatus(promotionalQuantity, normalQuantity, requestedQuantity);
+        return stockStatus.hasEnoughStock();
     }
 
     public Product getProduct() {

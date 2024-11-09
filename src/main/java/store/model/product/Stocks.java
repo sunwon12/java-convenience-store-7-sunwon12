@@ -39,7 +39,6 @@ public class Stocks {
     public Map<ProductName, ReleasedProduct> selectProduct(ProductName name, Quantity quantity) {
         validateProduct(name);
         Stock stock = stocks.get(name);
-        validateQuantity(stock, quantity);
 
         return Map.of(name, stock.release(quantity));
     }
@@ -47,12 +46,6 @@ public class Stocks {
     private void validateProduct(ProductName name) {
         if (!hasStock(name)) {
             throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_PRODUCT.getMessage());
-        }
-    }
-
-    private void validateQuantity(Stock stock, Quantity quantity) {
-        if (!stock.hasEnoughStock(quantity)) {
-            throw new IllegalArgumentException(ErrorMessage.NOT_ENOUGH_PRODUCT.getMessage());
         }
     }
 
