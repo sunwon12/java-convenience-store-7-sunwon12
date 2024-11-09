@@ -1,6 +1,8 @@
 package store.model.product;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -50,5 +52,49 @@ class PromotionTypeTest {
         Quantity missing = PromotionType.TWO_PLUS_ONE.calculateFreeQuantity(inputQuantity);
 
         assertEquals(expectedQuantity, missing);
+    }
+
+
+    @ParameterizedTest(name = "{0}이고 {1}개 있을 때 프로모션을 전부 챙긴 것이다")
+    @CsvSource({
+            "FLASH_SALE, 2",
+            "MD_RECOMMENDED,4",
+            "TWO_PLUS_ONE,3",
+            "TWO_PLUS_ONE,6",
+    })
+    void test4(String promotionType, int quantity) {
+        PromotionType type = PromotionType.valueOf(promotionType);
+        boolean answer = type.canAllPromotionQuantity(new Quantity(quantity));
+
+        assertTrue(answer);
+
+    }
+
+    @ParameterizedTest(name = "{0}이고 {1}개 있을 때 프로모션을 전부 못챙긴 것이다")
+    @CsvSource({
+            "FLASH_SALE, 1",
+            "MD_RECOMMENDED,3",
+            "TWO_PLUS_ONE,4",
+            "TWO_PLUS_ONE,8",
+    })
+    void test5(String promotionType, int quantity) {
+        PromotionType type = PromotionType.valueOf(promotionType);
+        boolean answer = type.canAllPromotionQuantity(new Quantity(quantity));
+
+        assertFalse(answer);
+    }
+
+    @ParameterizedTest(name = "프로모션 재고가 없는 상황에, {0}이고 {1}개 있을 때 {2}개는 프로모션 적용을 못 받는다.")
+    @CsvSource({
+            "FLASH_SALE, 3,1",
+            "MD_RECOMMENDED,2,0",
+            "TWO_PLUS_ONE,5,2",
+    })
+    void test6(String promotionType, int userQuantity, int cantPromotionQuantity) {
+        PromotionType type = PromotionType.valueOf(promotionType);
+
+        Quantity actual = type.calculateCantPromotionQuantity(new Quantity(userQuantity));
+
+        assertEquals(new Quantity(cantPromotionQuantity), actual);
     }
 }

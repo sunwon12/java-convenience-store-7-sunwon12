@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import store.model.product.Money;
+import store.model.product.Product;
 import store.model.product.ProductName;
 import store.model.product.PromotionType;
 import store.model.product.Quantity;
@@ -34,14 +36,31 @@ class ShoppingCartTest {
     void test2() {
         ShoppingCart cart = new ShoppingCart();
         Map<ProductName, ReleasedProduct> firstProducts = new HashMap<>();
-        firstProducts.put(new ProductName("Product A"), new ReleasedProduct(null, new Quantity(5), new Quantity(10), PromotionType.NONE));
+        firstProducts.put(new ProductName("Product A"),
+                new ReleasedProduct(null, new Quantity(5), new Quantity(10), PromotionType.NONE));
         cart.add(firstProducts);
 
         Map<ProductName, ReleasedProduct> secondProducts = new HashMap<>();
-        secondProducts.put(new ProductName("Product A"), new ReleasedProduct(null, new Quantity(2), new Quantity(3), PromotionType.NONE));
+        secondProducts.put(new ProductName("Product A"),
+                new ReleasedProduct(null, new Quantity(2), new Quantity(3), PromotionType.NONE));
         cart.add(secondProducts);
 
         assertEquals(new Quantity(7), cart.getProducts().get(new ProductName("Product A")).promotionQuantity());
         assertEquals(new Quantity(13), cart.getProducts().get(new ProductName("Product A")).normalQuantity());
+    }
+
+    @DisplayName("몇 개 프로모션 적용을 받을 수 있는지 확인한다")
+    @Test
+    void test3() {
+        ShoppingCart cart = new ShoppingCart();
+        Map<ProductName, ReleasedProduct> products = new HashMap<>();
+        ProductName productName = new ProductName("콜라");
+        products.put(productName, new ReleasedProduct(new Product(productName, new Money(1000)), new Quantity(5), new Quantity(10), PromotionType.TWO_PLUS_ONE));
+        cart.add(products);
+
+        Map<ProductName, Quantity> cantPromotion = cart.calculateNonPromotionQuantity();
+
+        assertTrue(cantPromotion.containsKey(productName));
+        assertEquals(new Quantity(12), cantPromotion.get(productName));
     }
 }

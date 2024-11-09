@@ -35,4 +35,10 @@ public class StoreService {
         Map<ProductName, ReleasedProduct> releasedProducts = stocks.selectProduct(productName, quantity);
         shoppingCart.add(releasedProducts);
     }
+
+    public Map<ProductName, Quantity> calculateNonPromotionQuantity() {
+        return shoppingCart.calculateNonPromotionQuantity();
+    }
+
+
 }

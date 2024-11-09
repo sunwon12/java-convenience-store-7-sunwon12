@@ -26,6 +26,7 @@ public class StoreController {
         service.initiallizeStocks();
         showStocks();
         putInCart();
+        purchase();
     }
 
     private void showStocks() {
@@ -37,11 +38,24 @@ public class StoreController {
         List<OrderProductInfoRequest> requests = inputView.readProductNameAndCount();
         Map<ProductName, Quantity> productNameQuantityMap = service.putInShoppingCart(requests);
         for (Map.Entry<ProductName, Quantity> entry : productNameQuantityMap.entrySet()) {
-            String answer = inputView.readMissingPromotionResponse(entry.getKey().getName(),
+             String answer = inputView.readMissingPromotionResponse(entry.getKey().getName(),
                     entry.getValue().getValue());
             if(answer.equals("Y")) {
                 service.putMissingInShoppingCart(entry.getKey(), entry.getValue());
             }
+        }
+    }
+
+    private void purchase() {
+        readPurchaseWithoutPromotion();
+    }
+
+    private void readPurchaseWithoutPromotion() {
+        Map<ProductName, Quantity> productNameQuantityMap = service.calculateNonPromotionQuantity();
+        for (Map.Entry<ProductName, Quantity> entry : productNameQuantityMap.entrySet()) {
+            ProductName productName = entry.getKey();
+            Quantity quantity = entry.getValue();
+            String nonPromotionalPurchaseResponse = inputView.readPurchaseWithoutPromotionResponse(productName.getName(), quantity.getValue());
         }
     }
 }

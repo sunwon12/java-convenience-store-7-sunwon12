@@ -6,4 +6,9 @@ public record ReleasedProduct(Product product, Quantity promotionQuantity,
     public Quantity getMissingPromotion() {
         return promotionType.calculateFreeQuantity(promotionQuantity);
     }
+
+    public Quantity getCantPromotionQuantity() {
+        return promotionType.calculateCantPromotionQuantity(promotionQuantity);
+    }
+
 }
