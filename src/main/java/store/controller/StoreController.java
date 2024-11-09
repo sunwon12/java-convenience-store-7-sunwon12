@@ -36,14 +36,20 @@ public class StoreController {
 
     private void putInCart() {
         List<OrderProductInfoRequest> requests = inputView.readProductNameAndCount();
-        Map<ProductName, Quantity> productNameQuantityMap = service.putInShoppingCart(requests);
-        for (Map.Entry<ProductName, Quantity> entry : productNameQuantityMap.entrySet()) {
-             String answer = inputView.readMissingPromotionResponse(entry.getKey().getName(),
-                    entry.getValue().getValue());
-            if(answer.equals("Y")) {
-                service.putMissingInShoppingCart(entry.getKey(), entry.getValue());
-            }
-        }
+        processNonPromotionalItems(service.putInShoppingCart(requests));
+    }
+
+    private void processNonPromotionalItems(Map<ProductName, Quantity> productNameQuantityMap) {
+        productNameQuantityMap.entrySet().stream()
+                .filter(entry -> service.checkEnoughStock(entry.getKey(), entry.getValue()))
+                .forEach(entry -> {
+                    String response = inputView.readMissingPromotionResponse(
+                            entry.getKey().getName(),
+                            entry.getValue().getValue());
+                    if (response.equals("Y")) {
+                        service.putMissingInShoppingCart(entry.getKey(), entry.getValue());
+                    }
+                });
     }
 
     private void purchase() {

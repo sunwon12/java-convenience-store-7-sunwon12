@@ -56,6 +56,12 @@ public class Stocks {
         }
     }
 
+    public boolean validateQuantity(ProductName productName, Quantity quantity) {
+        Stock stock = stocks.get(productName);
+        return stock.hasEnoughStock(quantity);
+
+    }
+
     public boolean hasStock(ProductName productName) {
         return stocks.containsKey(productName);
     }

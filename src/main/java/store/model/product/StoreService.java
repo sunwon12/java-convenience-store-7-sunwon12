@@ -41,4 +41,7 @@ public class StoreService {
     }
 
 
+    public boolean checkEnoughStock(ProductName productName, Quantity quantity) {
+        return stocks.validateQuantity(productName, quantity);
+    }
 }
