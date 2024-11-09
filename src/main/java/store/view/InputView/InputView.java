@@ -30,14 +30,14 @@ public class InputView {
     }
 
     private List<OrderProductInfoRequest> parseProductNameAndCount(String input) {
-        List<OrderProductInfoRequest> products = new ArrayList<>();
+        List<OrderProductInfoRequest> requests = new ArrayList<>();
         String[] items = splitByComma(input);
 
         for (String item : items) {
-            products.add(createOrderRequest(item));
+            requests.add(createOrderRequest(item));
         }
 
-        return products;
+        return requests;
     }
 
     private String[] splitByComma(String input) {

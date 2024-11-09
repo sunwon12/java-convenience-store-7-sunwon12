@@ -1,9 +1,11 @@
 package store.model.product;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import store.model.CustomFileReader;
 import store.model.ErrorMessage;
+import store.model.dto.OrderProductInfoRequest;
 import store.model.dto.StockDtos;
 
 public class Stocks {
@@ -24,12 +26,22 @@ public class Stocks {
                 ));
     }
 
-    public ReleasedProduct selectProduct(ProductName name, Quantity quantity) {
+    public Map<ProductName, ReleasedProduct> selectProduct(List<OrderProductInfoRequest> requests) {
+        Map<ProductName, ReleasedProduct> result = new LinkedHashMap<>();
+
+        requests.stream()
+                .map(request -> selectProduct(request.name(), request.amount()))
+                .forEach(result::putAll);
+
+        return result;
+    }
+
+    public Map<ProductName, ReleasedProduct> selectProduct(ProductName name, Quantity quantity) {
         validateProduct(name);
         Stock stock = stocks.get(name);
         validateQuantity(stock, quantity);
 
-        return stock.release(quantity);
+        return Map.of(name, stock.release(quantity));
     }
 
     private void validateProduct(ProductName name) {

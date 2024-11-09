@@ -1,8 +1,10 @@
 package store.controller;
 
 import java.util.List;
+import java.util.Map;
 import store.model.dto.OrderProductInfoRequest;
-import store.model.product.ReleasedProduct;
+import store.model.product.ProductName;
+import store.model.product.Quantity;
 import store.model.product.Stocks;
 import store.model.product.StoreService;
 import store.view.InputView.InputView;
@@ -23,7 +25,7 @@ public class StoreController {
     public void process() {
         service.initiallizeStocks();
         showStocks();
-        order();
+        putInCart();
     }
 
     private void showStocks() {
@@ -31,9 +33,16 @@ public class StoreController {
         outputView.showStocks(stocks);
     }
 
-    private void order() {
-        List<OrderProductInfoRequest> orderProductInfoRequests = inputView.readProductNameAndCount();
-        List<ReleasedProduct> products = service.putInShoppingCart(orderProductInfoRequests);
+    private void putInCart() {
+        List<OrderProductInfoRequest> requests = inputView.readProductNameAndCount();
+        Map<ProductName, Quantity> productNameQuantityMap = service.putInShoppingCart(requests);
+        for (Map.Entry<ProductName, Quantity> entry : productNameQuantityMap.entrySet()) {
+            String answer = inputView.readMissingPromotionResponse(entry.getKey().getName(),
+                    entry.getValue().getValue());
+            if(answer.equals("Y")) {
+                service.putMissingInShoppingCart(entry.getKey(), entry.getValue());
+            }
+        }
     }
 }
 

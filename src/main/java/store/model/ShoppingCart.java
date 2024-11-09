@@ -1,23 +1,51 @@
 package store.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import store.model.product.ProductName;
+import store.model.product.Quantity;
 import store.model.product.ReleasedProduct;
 
 public class ShoppingCart {
 
-    private List<ReleasedProduct> products;
+    private Map<ProductName, ReleasedProduct> products;
 
     public ShoppingCart() {
-        this.products = new ArrayList<>();
+        this.products = new LinkedHashMap<>();
     }
 
-    public ShoppingCart(List<ReleasedProduct> products) {
-        this.products = new ArrayList<>(products);
+    public ShoppingCart(Map<ProductName, ReleasedProduct> products) {
+        this.products = products;
     }
 
-    public List<ReleasedProduct> add(List<ReleasedProduct> products) {
-        this.products.addAll(products);
+    public ShoppingCart add(Map<ProductName, ReleasedProduct> newProducts) {
+        newProducts.forEach(this::addProduct);
+        return this;
+    }
+
+    private void addProduct(ProductName name, ReleasedProduct newProduct) {
+        products.merge(name, newProduct,
+                (existingProduct, addedProduct) -> new ReleasedProduct(
+                        existingProduct.product(),
+                        existingProduct.promotionQuantity().add(addedProduct.promotionQuantity()),
+                        existingProduct.normalQuantity().add(addedProduct.normalQuantity()),
+                        existingProduct.promotionType()
+                ));
+    }
+
+    public Map<ProductName, Quantity> checkMissingPromotion() {
+        Map<ProductName, Quantity> returnMap = new HashMap<>();
+        for (Map.Entry<ProductName, ReleasedProduct> entry : products.entrySet()) {
+            Quantity quantity = entry.getValue().getMissingPromotion();
+            if(!quantity.isZero()) {
+                returnMap.put(entry.getKey(), quantity);
+            }
+        }
+        return returnMap;
+    }
+
+    public Map<ProductName, ReleasedProduct> getProducts() {
         return products;
     }
 }

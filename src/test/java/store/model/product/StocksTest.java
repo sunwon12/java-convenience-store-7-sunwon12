@@ -3,6 +3,7 @@ package store.model.product;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.model.CustomFileReader;
@@ -35,8 +36,11 @@ class StocksTest {
     void test3() {
         Stocks stocks = new Stocks();
         stocks.initialize(new CustomFileReader());
+        ProductName productName = new ProductName("콜라");
 
-        ReleasedProduct releasedProduct = stocks.selectProduct(new ProductName("콜라"), new Quantity(5));
+        Map<ProductName, ReleasedProduct> releasedProductMap = stocks.selectProduct(productName,
+                new Quantity(5));
+        ReleasedProduct releasedProduct = releasedProductMap.get(productName);
         Quantity fiveQuantity = releasedProduct.normalQuantity().add(releasedProduct.promotionQuantity());
 
         assertEquals(new Quantity(5),fiveQuantity );
@@ -47,8 +51,11 @@ class StocksTest {
     void test4() {
         Stocks stocks = new Stocks();
         stocks.initialize(new CustomFileReader());
+        ProductName productName = new ProductName("콜라");
 
-        ReleasedProduct releasedProduct = stocks.selectProduct(new ProductName("콜라"), new Quantity(15));
+        Map<ProductName, ReleasedProduct> releasedProductMap = stocks.selectProduct(productName,
+                new Quantity(15));
+        ReleasedProduct releasedProduct = releasedProductMap.get(productName);
 
         assertEquals(new Quantity(10),releasedProduct.promotionQuantity() );
         assertEquals(new Quantity(5),releasedProduct.normalQuantity() );
@@ -59,8 +66,11 @@ class StocksTest {
     void test5() {
         Stocks stocks = new Stocks();
         stocks.initialize(new CustomFileReader());
+        ProductName productName = new ProductName("물");
 
-        ReleasedProduct releasedProduct = stocks.selectProduct(new ProductName("물"), new Quantity(5));
+        Map<ProductName, ReleasedProduct> releasedProductMap = stocks.selectProduct(productName,
+                new Quantity(5));
+        ReleasedProduct releasedProduct = releasedProductMap.get(productName);
 
         assertEquals(new Quantity(0),releasedProduct.promotionQuantity() );
         assertEquals(new Quantity(5),releasedProduct.normalQuantity() );

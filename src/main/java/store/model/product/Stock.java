@@ -20,7 +20,8 @@ public class Stock {
         return new ReleasedProduct(
                 product,
                 promotion,
-                normal
+                normal,
+                promotionType
         );
     }
 

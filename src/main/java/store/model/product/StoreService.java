@@ -2,6 +2,7 @@ package store.model.product;
 
 
 import java.util.List;
+import java.util.Map;
 import store.model.CustomFileReader;
 import store.model.ShoppingCart;
 import store.model.dto.OrderProductInfoRequest;
@@ -24,12 +25,14 @@ public class StoreService {
         return stocks;
     }
 
-    public List<ReleasedProduct> putInShoppingCart(List<OrderProductInfoRequest> requests) {
-        List<ReleasedProduct> products = requests.stream()
-                .map(request -> stocks.selectProduct(new ProductName(request.name()),
-                        new Quantity(request.amount())))
-                .toList();
+    public Map<ProductName, Quantity> putInShoppingCart(List<OrderProductInfoRequest> requests) {
+        Map<ProductName, ReleasedProduct> products = stocks.selectProduct(requests);
+        shoppingCart.add(products);
+        return shoppingCart.checkMissingPromotion();
+    }
 
-        return shoppingCart.add(products);
+    public void putMissingInShoppingCart(ProductName productName, Quantity quantity) {
+        Map<ProductName, ReleasedProduct> releasedProducts = stocks.selectProduct(productName, quantity);
+        shoppingCart.add(releasedProducts);
     }
 }
