@@ -25,4 +25,8 @@ public record ReleasedProduct(Product product, Quantity promotionQuantity,
         return product.getPrice()
                 .multiply(getTotalQuantity().getValue());
     }
+
+    public Quantity getFreePromotionQuantity() {
+       return promotionType.getFreePromotionQuantity(promotionQuantity);
+    }
 }

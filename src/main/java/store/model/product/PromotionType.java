@@ -8,33 +8,40 @@ public enum PromotionType {
     NONE("",
             quantity -> Quantity.ZERO,
             quantity -> false,
+            quantity -> Quantity.ZERO,
             quantity -> Quantity.ZERO),
     TWO_PLUS_ONE("탄산2+1",
             quantity -> quantity.remainder(3).getValue() == 2 ? new Quantity(1) : Quantity.ZERO,
             quantity -> quantity.getValue() % 3 == 0,
-            quantity -> quantity.remainder(3)),
+            quantity -> quantity.remainder(3),
+            quantity -> new Quantity(quantity.getValue() / 3)),  // 3개 중 1개 무료
     FLASH_SALE("반짝할인",
             quantity -> quantity.remainder(2).getValue() == 1 ? new Quantity(1) : Quantity.ZERO,
             quantity -> quantity.getValue() % 2 == 0,
-            quantity -> quantity.remainder(2)),
+            quantity -> quantity.remainder(2),
+            quantity -> new Quantity(quantity.getValue() / 2)),  // 2개 중 1개 무료
     MD_RECOMMENDED("MD추천상품",
             quantity -> quantity.remainder(2).getValue() == 1 ? new Quantity(1) : Quantity.ZERO,
             quantity -> quantity.getValue() % 2 == 0,
-            quantity -> quantity.remainder(2));
+            quantity -> quantity.remainder(2),
+            quantity -> new Quantity(quantity.getValue() / 2));  // 2개 중 1개 무료
 
     private final String description;
-    private final Function<Quantity, Quantity> freeQuantityCalculator;
+    private final Function<Quantity, Quantity> missingPromotionQuantityCalculator;
     private final Function<Quantity, Boolean> promotionQuantityChecker;
     private final Function<Quantity, Quantity> nonPromotionQuantityCalculator;
+    private final Function<Quantity, Quantity> freePromotionQuantityCalculator;
 
     PromotionType(String description,
-                  Function<Quantity, Quantity> freeQuantityCalculator,
+                  Function<Quantity, Quantity> missingPromotionQuantityCalculator,
                   Function<Quantity, Boolean> promotionQuantityChecker,
-                  Function<Quantity, Quantity> nonPromotionQuantityCalculator) {
+                  Function<Quantity, Quantity> nonPromotionQuantityCalculator,
+                  Function<Quantity, Quantity> freePromotionQuantityCalculator) {
         this.description = description;
-        this.freeQuantityCalculator = freeQuantityCalculator;
+        this.missingPromotionQuantityCalculator = missingPromotionQuantityCalculator;
         this.promotionQuantityChecker = promotionQuantityChecker;
         this.nonPromotionQuantityCalculator = nonPromotionQuantityCalculator;
+        this.freePromotionQuantityCalculator = freePromotionQuantityCalculator;
     }
 
 
@@ -42,7 +49,7 @@ public enum PromotionType {
         if (this == NONE || quantity.isZero()) {
             return Quantity.ZERO;
         }
-        return freeQuantityCalculator.apply(quantity);
+        return missingPromotionQuantityCalculator.apply(quantity);
     }
 
     public boolean isApplicable(int quantity) {
@@ -81,5 +88,12 @@ public enum PromotionType {
             return Quantity.ZERO;
         }
         return nonPromotionQuantityCalculator.apply(promotionQuantity);
+    }
+
+    public Quantity getFreePromotionQuantity(Quantity promotionQuantity) {
+        if (this == NONE || promotionQuantity.isZero()) {
+            return Quantity.ZERO;
+        }
+        return freePromotionQuantityCalculator.apply(promotionQuantity);
     }
 }

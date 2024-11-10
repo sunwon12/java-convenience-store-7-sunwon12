@@ -55,6 +55,7 @@ public class StoreController {
 
     private void purchase() {
         readPurchaseWithoutPromotion();
+        service.calculateFreePromotionQuantity();
         readUsingMembership();
     }
 

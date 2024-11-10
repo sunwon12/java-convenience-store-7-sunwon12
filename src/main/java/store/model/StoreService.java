@@ -11,6 +11,7 @@ import store.model.product.ReleasedProduct;
 import store.model.product.ReleasedProducts;
 import store.model.product.Stocks;
 import store.model.sell.Membership;
+import store.model.sell.Promotion;
 import store.model.sell.Receipt;
 
 public class StoreService {
@@ -18,13 +19,13 @@ public class StoreService {
     private final Stocks stocks;
     private final ShoppingCart shoppingCart;
     private final Membership membership;
-    private final Receipt receipt;
+    private final Promotion promotion;
 
     public StoreService() {
         this.stocks = new Stocks();
         this.shoppingCart = new ShoppingCart();
         this.membership = new Membership();
-        this.receipt = new Receipt();
+        this.promotion = new Promotion();
     }
 
     public void initiallizeStocks() {
@@ -63,5 +64,11 @@ public class StoreService {
         ReleasedProducts releasedProducts = shoppingCart.getReleasedProducts();
         Money totalMoney = releasedProducts.getTotalMoney();
         return membership.discount(totalMoney);
+    }
+
+
+    public void calculateFreePromotionQuantity() {
+        Map<ProductName, Quantity> freePromotion = promotion.getFreePromotion(shoppingCart);
+        Receipt receipt = new Receipt(shoppingCart.getProducts());
     }
 }

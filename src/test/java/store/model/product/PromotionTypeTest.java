@@ -97,4 +97,24 @@ class PromotionTypeTest {
 
         assertEquals(new Quantity(cantPromotionQuantity), actual);
     }
+
+    @ParameterizedTest(name = "{0}이고 {1}개 있을 때 무료로 받을 수 있는 수량은 {2}개이다")
+    @CsvSource({
+            "FLASH_SALE, 6, 3",      // 2개당 1개 무료
+            "FLASH_SALE, 4, 2",
+            "MD_RECOMMENDED, 6, 3",   // 2개당 1개 무료
+            "MD_RECOMMENDED, 4, 2",
+            "TWO_PLUS_ONE, 6, 2",    // 3개당 1개 무료
+            "TWO_PLUS_ONE, 9, 3",
+            "NONE, 6, 0"             // 프로모션 없음
+    })
+    void test7(String promotionType, int quantity, int expectedFree) {
+        PromotionType type = PromotionType.valueOf(promotionType);
+        Quantity purchaseQuantity = new Quantity(quantity);
+        Quantity expectedQuantity = new Quantity(expectedFree);
+
+        Quantity actualFreeQuantity = type.getFreePromotionQuantity(purchaseQuantity);
+
+        assertEquals(expectedQuantity, actualFreeQuantity);
+    }
 }
