@@ -9,6 +9,7 @@ import store.model.product.ProductName;
 import store.model.product.Quantity;
 import store.model.product.ReleasedProduct;
 import store.model.product.Stocks;
+import store.model.sell.Receipt;
 import store.view.InputView.InputView;
 import store.view.outputView.OutputView;
 
@@ -57,7 +58,8 @@ public class StoreController {
     private void purchase() {
         readPurchaseWithoutPromotion();
         Money membershipDiscountMoney = readUsingMembership();
-        service.finalPurchase(membershipDiscountMoney);
+        Receipt receipt = service.finalPurchase(membershipDiscountMoney);
+        outputView.showReceipt(receipt);
     }
 
     private void readPurchaseWithoutPromotion() {

@@ -29,4 +29,8 @@ public class Money {
         Money money = (Money) o;
         return price == money.price;
     }
+
+    public int getValue() {
+        return price;
+    }
 }

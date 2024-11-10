@@ -63,10 +63,9 @@ public class StoreService {
         return membership.discount(totalMoney);
     }
 
-    public void finalPurchase(Money membershipDiscount) {
+    public Receipt finalPurchase(Money membershipDiscount) {
         Map<ProductName, ReleasedProduct> products = shoppingCart.getProducts();
         Map<ProductName, Quantity> freePromotion = promotion.getFreePromotion(shoppingCart);
-        Money totalMoney = shoppingCart.getTotalMoney();
-        Receipt receipt = new Receipt(products,totalMoney, freePromotion, membershipDiscount);
+        return Receipt.create(products, freePromotion, membershipDiscount);
     }
 }
