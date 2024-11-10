@@ -49,4 +49,23 @@ public class Receipt {
                 .map(ReleasedProduct::getTotalMoney)
                 .reduce(Money.ZERO, Money::add);
     }
+
+    public Money getFinalPrice() {
+        Money promotionDiscount = calculatePromotionDiscount();
+        return totalPrice
+                .subtract(promotionDiscount)
+                .subtract(membershipDiscountPrice);
+    }
+
+    public Money calculatePromotionDiscount() {
+        return promotionDiscountPrice.entrySet().stream()
+                .map(entry -> {
+                    ProductName productName = entry.getKey();
+                    Quantity freeQuantity = entry.getValue();
+                    Money price = products.get(productName).getPrice();
+
+                    return price.multiply(freeQuantity.getValue());
+                })
+                .reduce(Money.ZERO, Money::add);
+    }
 }

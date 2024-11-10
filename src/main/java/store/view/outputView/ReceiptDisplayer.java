@@ -85,9 +85,8 @@ public class ReceiptDisplayer {
     }
 
     private void appendDiscounts(StringBuilder sb, Receipt receipt, int maxNameLength) {
-        int promotionDiscount = calculatePromotionDiscount(receipt);
         sb.append("행사할인").append(SUMMARY_SPACE)
-                .append(String.format("-%,d", promotionDiscount))
+                .append(String.format("-%,d", receipt.calculatePromotionDiscount().getValue()))
                 .append(PRICE_COLUMN_SPACE);
         sb.append("멤버십할인").append(SUMMARY_SPACE)
                 .append(String.format("-%,d", receipt.getMembershipDiscountPrice().getValue()))
@@ -95,9 +94,8 @@ public class ReceiptDisplayer {
     }
 
     private void appendFinalPrice(StringBuilder sb, Receipt receipt, int maxNameLength) {
-        int finalPrice = calculateFinalPrice(receipt);
         sb.append("내실돈").append(SUMMARY_SPACE)
-                .append(String.format("%,d", finalPrice))
+                .append(String.format(" %,d", receipt.getFinalPrice().getValue()))
                 .append(PRICE_COLUMN_SPACE);
         ;
     }
@@ -106,18 +104,5 @@ public class ReceiptDisplayer {
         return receipt.getProducts().values().stream()
                 .mapToInt(product -> product.getTotalQuantity().getValue())
                 .sum();
-    }
-
-    private int calculatePromotionDiscount(Receipt receipt) {
-        return receipt.getPromotionDiscountPrice().entrySet().stream()
-                .mapToInt(entry -> entry.getValue().getValue() *
-                        receipt.getProducts().get(entry.getKey()).getTotalMoney().getValue())
-                .sum();
-    }
-
-    private int calculateFinalPrice(Receipt receipt) {
-        return receipt.getTotalPrice().getValue()
-                - calculatePromotionDiscount(receipt)
-                - receipt.getMembershipDiscountPrice().getValue();
     }
 }

@@ -29,4 +29,8 @@ public record ReleasedProduct(Product product, Quantity promotionQuantity,
     public Quantity getFreePromotionQuantity() {
        return promotionType.getFreePromotionQuantity(promotionQuantity);
     }
+
+    public Money getPrice() {
+        return product.getPrice();
+    }
 }

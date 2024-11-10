@@ -33,4 +33,8 @@ public class Money {
     public int getValue() {
         return price;
     }
+
+    public Money subtract(Money promotionDiscount) {
+        return new Money(price - promotionDiscount.price);
+    }
 }
