@@ -2,12 +2,13 @@ package store.controller;
 
 import java.util.List;
 import java.util.Map;
+import store.model.StoreService;
 import store.model.dto.OrderProductInfoRequest;
+import store.model.product.Money;
 import store.model.product.ProductName;
 import store.model.product.Quantity;
 import store.model.product.ReleasedProduct;
 import store.model.product.Stocks;
-import store.model.StoreService;
 import store.view.InputView.InputView;
 import store.view.outputView.OutputView;
 
@@ -55,8 +56,8 @@ public class StoreController {
 
     private void purchase() {
         readPurchaseWithoutPromotion();
-        service.calculateFreePromotionQuantity();
-        readUsingMembership();
+        Money membershipDiscountMoney = readUsingMembership();
+        service.finalPurchase(membershipDiscountMoney);
     }
 
     private void readPurchaseWithoutPromotion() {
@@ -71,12 +72,13 @@ public class StoreController {
         }
     }
 
-    private void readUsingMembership() {
+    private Money readUsingMembership() {
         String response = inputView.readUsingMembershipResponse();
+        Money membershipDiscountMoney = Money.ZERO;
         if(response.equals("Y")) {
-            service.useMembership();
+            membershipDiscountMoney = service.useMembership();
         }
-
+        return membershipDiscountMoney;
     }
 }
 

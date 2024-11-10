@@ -8,7 +8,6 @@ import store.model.product.Money;
 import store.model.product.ProductName;
 import store.model.product.Quantity;
 import store.model.product.ReleasedProduct;
-import store.model.product.ReleasedProducts;
 import store.model.product.Stocks;
 import store.model.sell.Membership;
 import store.model.sell.Promotion;
@@ -51,7 +50,6 @@ public class StoreService {
         return shoppingCart.calculateNonPromotionQuantity();
     }
 
-
     public boolean checkEnoughStock(ProductName productName, Quantity quantity) {
         return stocks.validateQuantity(productName, quantity);
     }
@@ -61,14 +59,14 @@ public class StoreService {
     }
 
     public Money useMembership() {
-        ReleasedProducts releasedProducts = shoppingCart.getReleasedProducts();
-        Money totalMoney = releasedProducts.getTotalMoney();
+        Money totalMoney = shoppingCart.getTotalMoney();
         return membership.discount(totalMoney);
     }
 
-
-    public void calculateFreePromotionQuantity() {
+    public void finalPurchase(Money membershipDiscount) {
+        Map<ProductName, ReleasedProduct> products = shoppingCart.getProducts();
         Map<ProductName, Quantity> freePromotion = promotion.getFreePromotion(shoppingCart);
-        Receipt receipt = new Receipt(shoppingCart.getProducts());
+        Money totalMoney = shoppingCart.getTotalMoney();
+        Receipt receipt = new Receipt(products,totalMoney, freePromotion, membershipDiscount);
     }
 }

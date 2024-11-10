@@ -55,12 +55,29 @@ class ShoppingCartTest {
         ShoppingCart cart = new ShoppingCart();
         Map<ProductName, ReleasedProduct> products = new HashMap<>();
         ProductName productName = new ProductName("콜라");
-        products.put(productName, new ReleasedProduct(new Product(productName, new Money(1000)), new Quantity(5), new Quantity(10), PromotionType.TWO_PLUS_ONE));
+        products.put(productName, new ReleasedProduct(new Product(productName, new Money(1000)),
+                new Quantity(5), new Quantity(10), PromotionType.TWO_PLUS_ONE));
         cart.add(products);
 
         Map<ProductName, ReleasedProduct> cantPromotion = cart.calculateNonPromotionQuantity();
 
         assertTrue(cantPromotion.containsKey(productName));
         assertEquals(new Quantity(12), cantPromotion.get(productName).getTotalQuantity());
+    }
+
+    @DisplayName("출고된 상품의 총 금액을 반환하다")
+    @Test
+    void test4() {
+        Money expected = new Money(15000);
+        ShoppingCart cart = new ShoppingCart();
+        Map<ProductName, ReleasedProduct> products = new HashMap<>();
+        ProductName productName = new ProductName("콜라");
+        products.put(productName, new ReleasedProduct(new Product(productName, new Money(1000)),
+                new Quantity(5), new Quantity(10), PromotionType.TWO_PLUS_ONE));
+        cart.add(products);
+
+        Money totalMoney = cart.getTotalMoney();
+
+        assertEquals(expected, totalMoney);
     }
 }

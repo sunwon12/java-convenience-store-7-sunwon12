@@ -5,10 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import store.model.product.Money;
 import store.model.product.ProductName;
 import store.model.product.Quantity;
 import store.model.product.ReleasedProduct;
-import store.model.product.ReleasedProducts;
 
 public class ShoppingCart {
 
@@ -52,10 +52,6 @@ public class ShoppingCart {
         return products;
     }
 
-    public ReleasedProducts getReleasedProducts() {
-        return new ReleasedProducts(products);
-    }
-
     /**
      * 프로모션 상품을 가지고 있는데, 프로모션 상품이 적용이 안되는 상품 개수를 반환한다
      */
@@ -91,5 +87,11 @@ public class ShoppingCart {
         ReleasedProduct releasedProduct = products.get(productName);
         ReleasedProduct newProduct = releasedProduct.subtract(subtractProduct);
         products.put(productName, newProduct);
+    }
+
+    public Money getTotalMoney() {
+        return products.values().stream()
+                .map(ReleasedProduct::getTotalMoney)
+                .reduce(Money.ZERO, Money::add);
     }
 }
