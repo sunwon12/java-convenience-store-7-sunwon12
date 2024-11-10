@@ -4,7 +4,7 @@ import store.model.ErrorMessage;
 
 public class SimpleValidator {
 
-    private static final String INPUT_PRODUCT_NAME_COUNT_FORMAT = "^\\[\\D+-\\d\\](\\s*,\\s*\\[\\D+-\\d\\])*$";
+    private static final String INPUT_PRODUCT_NAME_COUNT_FORMAT = "^\\[\\D+-\\d+\\](\\s*,\\s*\\[\\D+-\\d\\])*$";
     private static final String YES = "Y";
     private static final String NO = "N";
 
