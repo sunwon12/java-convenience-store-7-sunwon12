@@ -13,6 +13,8 @@ import store.model.sell.Receipt;
 import store.view.InputView.InputView;
 import store.view.outputView.OutputView;
 
+
+//TODO 재고는 초기화 되면 안되고 사용자가 초기화 되어야 함
 public class StoreController {
 
     private final InputView inputView;
@@ -26,10 +28,14 @@ public class StoreController {
     }
 
     public void process() {
-        service.initiallizeStocks();
-        showStocks();
-        putInCart();
-        purchase();
+        String response;
+        do {
+            service.initiallizeStocks();
+            showStocks();
+            putInCart();
+            purchase();
+            response = inputView.readReorderResponse();
+        } while (response.equals("Y"));
     }
 
     private void showStocks() {
