@@ -55,6 +55,7 @@ public class StoreController {
 
     private void purchase() {
         readPurchaseWithoutPromotion();
+        readUsingMembership();
     }
 
     private void readPurchaseWithoutPromotion() {
@@ -67,6 +68,14 @@ public class StoreController {
                 service.subtractFromCart(entry);
             }
         }
+    }
+
+    private void readUsingMembership() {
+        String response = inputView.readUsingMembershipResponse();
+        if(response.equals("Y")) {
+            service.useMembership();
+        }
+
     }
 }
 

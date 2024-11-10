@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import store.model.product.ProductName;
 import store.model.product.Quantity;
 import store.model.product.ReleasedProduct;
+import store.model.product.ReleasedProducts;
 
 public class ShoppingCart {
 
@@ -51,6 +52,10 @@ public class ShoppingCart {
         return products;
     }
 
+    public ReleasedProducts getReleasedProducts() {
+        return new ReleasedProducts(products);
+    }
+
     /**
      * 프로모션 상품을 가지고 있는데, 프로모션 상품이 적용이 안되는 상품 개수를 반환한다
      */
@@ -72,7 +77,6 @@ public class ShoppingCart {
 
     private ReleasedProduct calculateNonPromotionQuantity(Map.Entry<ProductName, ReleasedProduct> entry) {
         ReleasedProduct releasedProduct = entry.getValue();
-        ProductName productName = entry.getKey();
         return new ReleasedProduct(releasedProduct.product(),
                 releasedProduct.getCantPromotionQuantity(),
                 releasedProduct.normalQuantity(),

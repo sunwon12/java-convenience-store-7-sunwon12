@@ -9,5 +9,9 @@ public class Product {
         this.name = name;
         this.price = price;
     }
+
+    public Money getPrice() {
+        return price;
+    }
 }
 

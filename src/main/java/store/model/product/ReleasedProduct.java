@@ -20,4 +20,9 @@ public record ReleasedProduct(Product product, Quantity promotionQuantity,
         Quantity normal = normalQuantity.subtract(removingProduct.normalQuantity);
         return new ReleasedProduct(product, promotion, normal, promotionType);
     }
+
+    public Money getTotalMoney() {
+        return product.getPrice()
+                .multiply(getTotalQuantity().getValue());
+    }
 }
