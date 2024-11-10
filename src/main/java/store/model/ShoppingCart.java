@@ -94,4 +94,11 @@ public class ShoppingCart {
                 .map(ReleasedProduct::getTotalMoney)
                 .reduce(Money.ZERO, Money::add);
     }
+
+    public Money getNonPromotionTotalMoney() {
+        return products.entrySet().stream()
+                .map(this::calculateNonPromotionQuantity)
+                .map(ReleasedProduct::getTotalMoney)
+                .reduce(Money.ZERO, Money::add);
+    }
 }

@@ -7,6 +7,6 @@ public class Membership {
     private static final double DISCOUNT_RATE = 0.3;
 
     public Money discount(Money money) {
-        return money.applyRate(1-DISCOUNT_RATE);
+        return money.applyRate(DISCOUNT_RATE);
     }
 }

@@ -59,8 +59,8 @@ public class StoreService {
     }
 
     public Money useMembership() {
-        Money totalMoney = shoppingCart.getTotalMoney();
-        return membership.discount(totalMoney);
+        Money nonPromotionTotalMoney = shoppingCart.getNonPromotionTotalMoney();
+        return membership.discount(nonPromotionTotalMoney);
     }
 
     public Receipt finalPurchase(Money membershipDiscount) {
