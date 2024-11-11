@@ -13,6 +13,5 @@ public class StocksDisplayer {
     public void display(Stocks stocks) {
         stocks.getStocks().entrySet().stream()
                 .forEach(entry -> stockDisplayer.display(entry.getKey(), entry.getValue()));
-        System.out.println();
     }
 }
