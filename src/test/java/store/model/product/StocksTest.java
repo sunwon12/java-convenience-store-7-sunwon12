@@ -102,7 +102,6 @@ class StocksTest {
 
         stocks.addReleasedProductInStocks(takeOutEntry);
 
-        assertEquals(productName, stocks.getStocks().get(productName));
         assertEquals(new Quantity(2), stocks.getStocks().get(productName).getPromotionalQuantity());
         assertEquals(new Quantity(10), stocks.getStocks().get(productName).getNormalQuantity());
     }
