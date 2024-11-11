@@ -51,8 +51,8 @@ public class StoreService {
         return shoppingCart.calculateNonPromotionQuantity();
     }
 
-    public boolean checkEnoughStock(ProductName productName, Quantity quantity) {
-        return stocks.validateQuantity(productName, quantity);
+    public boolean checkEnoughPromotionStock(ProductName productName, Quantity quantity) {
+        return stocks.checkEnoughPromotionQuantity(productName, quantity);
     }
 
     public void subtractFromCart(Map.Entry<ProductName, ReleasedProduct> nonPromotions) {

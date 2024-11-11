@@ -60,10 +60,11 @@ public class Stock {
                 getPromotionalQuantity().isZero();
     }
 
-    public boolean hasEnoughStock(Quantity requestedQuantity) {
+    public boolean hasEnoughPromotionStock(Quantity requestedQuantity) {
         StockStatus stockStatus = new StockStatus(promotionalQuantity, normalQuantity, requestedQuantity);
-        return stockStatus.hasEnoughStock();
+        return stockStatus.hasEnoughPromotionStock();
     }
+
 
     public Product getProduct() {
         return product;

@@ -36,7 +36,11 @@ class StockStatus {
         return requestedQuantity.subtract(promotionalQuantity);
     }
 
-    private boolean hasInsufficientPromotionalStock() {
+    public boolean hasEnoughPromotionStock() {
+        return promotionalQuantity.isGreaterThanOrEqual(requestedQuantity);
+    }
+
+    public boolean hasInsufficientPromotionalStock() {
         return promotionalQuantity.isLessThan(requestedQuantity);
     }
 

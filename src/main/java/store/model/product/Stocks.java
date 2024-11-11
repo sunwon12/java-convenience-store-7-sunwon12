@@ -49,10 +49,9 @@ public class Stocks {
         }
     }
 
-    public boolean validateQuantity(ProductName productName, Quantity quantity) {
+    public boolean checkEnoughPromotionQuantity(ProductName productName, Quantity quantity) {
         Stock stock = stocks.get(productName);
-        return stock.hasEnoughStock(quantity);
-
+        return stock.hasEnoughPromotionStock(quantity);
     }
 
     public boolean hasStock(ProductName productName) {

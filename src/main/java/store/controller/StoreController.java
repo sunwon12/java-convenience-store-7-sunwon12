@@ -52,7 +52,7 @@ public class StoreController {
 
     private void putMissingPromotion(Map<ProductName, Quantity> productNameQuantityMap) {
         productNameQuantityMap.entrySet().stream()
-                .filter(entry -> service.checkEnoughStock(entry.getKey(), entry.getValue()))
+                .filter(entry -> service.checkEnoughPromotionStock(entry.getKey(), entry.getValue()))
                 .forEach(entry -> {
                     String response = attempt(() -> inputView.readMissingPromotionResponse(
                             entry.getKey().getName(),
