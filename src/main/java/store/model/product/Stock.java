@@ -36,7 +36,7 @@ public class Stock {
     }
 
     public int getPrice() {
-        return normalQuantity.getValue();
+        return product.getPrice().getValue();
     }
 
     public PromotionType getPromotionType() {
@@ -53,6 +53,11 @@ public class Stock {
 
     public boolean hasPromotion() {
         return !promotionalQuantity.isZero();
+    }
+
+    public boolean hadPromotion() {
+        return getPromotionType() != PromotionType.NONE &&
+                getPromotionalQuantity().isZero();
     }
 
     public boolean hasEnoughStock(Quantity requestedQuantity) {
