@@ -15,7 +15,7 @@ class StocksTest {
     @Test
     void test1() {
         Stocks stocks = new Stocks();
-        stocks.initialize(new CustomFileReader());
+        stocks.initiallize(new CustomFileReader());
 
         assertThrows(IllegalArgumentException.class, () ->
                 stocks.selectProduct(new ProductName("아무것도아니야"), new Quantity(1)));
@@ -26,7 +26,7 @@ class StocksTest {
     @Test
     void test2() {
         Stocks stocks = new Stocks();
-        stocks.initialize(new CustomFileReader());
+        stocks.initiallize(new CustomFileReader());
 
         assertThrows(IllegalArgumentException.class, () ->
                 stocks.selectProduct(new ProductName("콜라"), new Quantity(1000)));
@@ -36,7 +36,7 @@ class StocksTest {
     @Test
     void test3() {
         Stocks stocks = new Stocks();
-        stocks.initialize(new CustomFileReader());
+        stocks.initiallize(new CustomFileReader());
         ProductName productName = new ProductName("콜라");
 
         Map<ProductName, ReleasedProduct> releasedProductMap = stocks.selectProduct(productName,
@@ -51,7 +51,7 @@ class StocksTest {
     @Test
     void test4() {
         Stocks stocks = new Stocks();
-        stocks.initialize(new CustomFileReader());
+        stocks.initiallize(new CustomFileReader());
         ProductName productName = new ProductName("콜라");
 
         Map<ProductName, ReleasedProduct> releasedProductMap = stocks.selectProduct(productName,
@@ -66,7 +66,7 @@ class StocksTest {
     @Test
     void test5() {
         Stocks stocks = new Stocks();
-        stocks.initialize(new CustomFileReader());
+        stocks.initiallize(new CustomFileReader());
         ProductName productName = new ProductName("물");
 
         Map<ProductName, ReleasedProduct> releasedProductMap = stocks.selectProduct(productName,
@@ -81,7 +81,7 @@ class StocksTest {
     @Test
     void test6() {
         Stocks stocks = new Stocks();
-        stocks.initialize(new CustomFileReader());
+        stocks.initiallize(new CustomFileReader());
         ProductName productName = new ProductName("물");
 
         stocks.selectProduct(productName, new Quantity(5));
@@ -93,7 +93,7 @@ class StocksTest {
     @Test
     void test7() {
         Stocks stocks = new Stocks();
-        stocks.initialize(new CustomFileReader());
+        stocks.initiallize(new CustomFileReader());
         ProductName productName = new ProductName("콜라");
         SimpleEntry<ProductName, ReleasedProduct> takeOutEntry = new SimpleEntry<>(productName,
                 new ReleasedProduct(new Product(productName, new Money(1000)),

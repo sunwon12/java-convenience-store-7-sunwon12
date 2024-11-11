@@ -16,7 +16,7 @@ public class Stocks {
         this.stocks = new LinkedHashMap<>();
     }
 
-    public void initialize(CustomFileReader customFileReader) {
+    public void initiallize(CustomFileReader customFileReader) {
         StockDtos dtos = customFileReader.loadProducts();
         dtos.groupedProducts()
                 .keySet()
