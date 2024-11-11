@@ -32,9 +32,9 @@ public class StoreController {
         String response;
         service.initiallizeStocks();
         do {
-            showStocks();
-            putInCart();
-            purchase();
+            attempt(() -> showStocks());
+            attempt(() -> putInCart());
+            attempt(() -> purchase());
             response = attempt(() -> inputView.readReorderResponse());
         } while (response.equals("Y"));
     }
@@ -45,7 +45,7 @@ public class StoreController {
     }
 
     private void putInCart() {
-        List<OrderProductInfoRequest> requests = attempt(() -> inputView.readProductNameAndCount());
+        List<OrderProductInfoRequest> requests = inputView.readProductNameAndCount();
         Map<ProductName, Quantity> productNameQuantityMap = service.putInShoppingCart(new ShoppingCart(), requests);
         putMissingPromotion(productNameQuantityMap);
     }
@@ -54,9 +54,9 @@ public class StoreController {
         productNameQuantityMap.entrySet().stream()
                 .filter(entry -> service.checkEnoughPromotionStock(entry.getKey(), entry.getValue()))
                 .forEach(entry -> {
-                    String response = attempt(() -> inputView.readMissingPromotionResponse(
+                    String response = inputView.readMissingPromotionResponse(
                             entry.getKey().getName(),
-                            entry.getValue().getValue()));
+                            entry.getValue().getValue());
                     if (response.equals("Y")) {
                         service.putMissingInShoppingCart(entry.getKey(), entry.getValue());
                     }
@@ -73,9 +73,9 @@ public class StoreController {
     private void readPurchaseWithoutPromotion() {
         Map<ProductName, ReleasedProduct> nonPromotions = service.calculateNonPromotionQuantity();
         for (Map.Entry<ProductName, ReleasedProduct> entry : nonPromotions.entrySet()) {
-            String response = attempt(() -> inputView.readPurchaseWithoutPromotionResponse(
+            String response = inputView.readPurchaseWithoutPromotionResponse(
                     entry.getKey().getName(),
-                    entry.getValue().getTotalQuantity().getValue()));
+                    entry.getValue().getTotalQuantity().getValue());
             if (response.equals("N")) {
                 service.subtractFromCart(entry);
             }
@@ -83,7 +83,7 @@ public class StoreController {
     }
 
     private Money readUsingMembership() {
-        String response = attempt(() -> inputView.readUsingMembershipResponse());
+        String response = inputView.readUsingMembershipResponse();
         Money membershipDiscountMoney = Money.ZERO;
         if (response.equals("Y")) {
             membershipDiscountMoney = service.useMembership();
@@ -91,12 +91,21 @@ public class StoreController {
         return membershipDiscountMoney;
     }
 
-    private <T> T attempt(Supplier<T> inputSupplier) {
+    private <T> T attempt(Supplier<T> supplier) {
         try {
-            return inputSupplier.get();
+            return supplier.get();
         } catch (IllegalArgumentException e) {
             outputView.showException(e.getMessage());
-            return attempt(inputSupplier);
+            return attempt(supplier);
+        }
+    }
+
+    private void attempt(Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (IllegalArgumentException e) {
+            outputView.showException(e.getMessage());
+            attempt(runnable);
         }
     }
 }
