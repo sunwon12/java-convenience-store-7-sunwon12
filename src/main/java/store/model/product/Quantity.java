@@ -1,6 +1,7 @@
 package store.model.product;
 
 import java.util.Objects;
+import store.model.ErrorMessage;
 
 public class Quantity {
     public static final Quantity ZERO = new Quantity(0);
@@ -13,7 +14,7 @@ public class Quantity {
 
     private void validate(int value) {
         if (value < 0) {
-            throw new IllegalArgumentException("수량은 0보다 작을 수 없습니다.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_QUANTITY.getMessage());
         }
     }
 
