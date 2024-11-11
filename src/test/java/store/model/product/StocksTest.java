@@ -43,7 +43,7 @@ class StocksTest {
         ReleasedProduct releasedProduct = releasedProductMap.get(productName);
         Quantity fiveQuantity = releasedProduct.normalQuantity().add(releasedProduct.promotionQuantity());
 
-        assertEquals(new Quantity(5),fiveQuantity );
+        assertEquals(new Quantity(5), fiveQuantity);
     }
 
     @DisplayName("프로모션 개수가 부족하면 일반 상품을 꺼낸다")
@@ -57,8 +57,8 @@ class StocksTest {
                 new Quantity(15));
         ReleasedProduct releasedProduct = releasedProductMap.get(productName);
 
-        assertEquals(new Quantity(10),releasedProduct.promotionQuantity() );
-        assertEquals(new Quantity(5),releasedProduct.normalQuantity() );
+        assertEquals(new Quantity(10), releasedProduct.promotionQuantity());
+        assertEquals(new Quantity(5), releasedProduct.normalQuantity());
     }
 
     @DisplayName("프로모션 제품이 없으면 일반 상품만 꺼낸다")
@@ -72,9 +72,20 @@ class StocksTest {
                 new Quantity(5));
         ReleasedProduct releasedProduct = releasedProductMap.get(productName);
 
-        assertEquals(new Quantity(0),releasedProduct.promotionQuantity() );
-        assertEquals(new Quantity(5),releasedProduct.normalQuantity() );
+        assertEquals(new Quantity(0), releasedProduct.promotionQuantity());
+        assertEquals(new Quantity(5), releasedProduct.normalQuantity());
     }
 
+    @DisplayName("재고를 꺼내면 재고에 반영한다")
+    @Test
+    void test6() {
+        Stocks stocks = new Stocks();
+        stocks.initialize(new CustomFileReader());
+        ProductName productName = new ProductName("물");
+
+        stocks.selectProduct(productName, new Quantity(5));
+
+        assertEquals(new Quantity(5), stocks.getStocks().get(productName).getNormalQuantity());
+    }
 
 }

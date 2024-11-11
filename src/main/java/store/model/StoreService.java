@@ -16,13 +16,12 @@ import store.model.sell.Receipt;
 public class StoreService {
 
     private final Stocks stocks;
-    private final ShoppingCart shoppingCart;
+    private ShoppingCart shoppingCart;
     private final Membership membership;
     private final Promotion promotion;
 
     public StoreService() {
         this.stocks = new Stocks();
-        this.shoppingCart = new ShoppingCart();
         this.membership = new Membership();
         this.promotion = new Promotion();
     }
@@ -35,7 +34,9 @@ public class StoreService {
         return stocks;
     }
 
-    public Map<ProductName, Quantity> putInShoppingCart(List<OrderProductInfoRequest> requests) {
+    public Map<ProductName, Quantity> putInShoppingCart(ShoppingCart shoppingCart,
+                                                        List<OrderProductInfoRequest> requests) {
+        this.shoppingCart = shoppingCart;
         Map<ProductName, ReleasedProduct> products = stocks.selectProduct(requests);
         shoppingCart.add(products);
         return shoppingCart.checkMissingPromotion();

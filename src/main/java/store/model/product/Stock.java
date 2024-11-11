@@ -16,13 +16,18 @@ public class Stock {
     public ReleasedProduct release(Quantity requestedQuantity) {
         validateQuantity(requestedQuantity);
         StockStatus stockStatus = new StockStatus(promotionalQuantity, normalQuantity, requestedQuantity);
-
+        takeOut(stockStatus);
         return new ReleasedProduct(
                 product,
                 stockStatus.getPromotionalAvailable(),
                 stockStatus.getNormalRequired(),
                 promotionType
         );
+    }
+
+    private void takeOut(StockStatus stockStatus) {
+        this.promotionalQuantity = this.promotionalQuantity.subtract(stockStatus.getPromotionalAvailable());
+        this.normalQuantity = this.normalQuantity.subtract(stockStatus.getNormalRequired());
     }
 
     private void validateQuantity(Quantity requestedQuantity) {

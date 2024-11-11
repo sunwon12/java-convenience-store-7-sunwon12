@@ -2,6 +2,7 @@ package store.controller;
 
 import java.util.List;
 import java.util.Map;
+import store.model.ShoppingCart;
 import store.model.StoreService;
 import store.model.dto.OrderProductInfoRequest;
 import store.model.product.Money;
@@ -14,7 +15,6 @@ import store.view.InputView.InputView;
 import store.view.outputView.OutputView;
 
 
-//TODO 재고는 초기화 되면 안되고 사용자가 초기화 되어야 함
 public class StoreController {
 
     private final InputView inputView;
@@ -29,8 +29,8 @@ public class StoreController {
 
     public void process() {
         String response;
+        service.initiallizeStocks();
         do {
-            service.initiallizeStocks();
             showStocks();
             putInCart();
             purchase();
@@ -45,10 +45,11 @@ public class StoreController {
 
     private void putInCart() {
         List<OrderProductInfoRequest> requests = inputView.readProductNameAndCount();
-        processNonPromotionalItems(service.putInShoppingCart(requests));
+        Map<ProductName, Quantity> productNameQuantityMap = service.putInShoppingCart(new ShoppingCart(), requests);
+        putMissingPromotion(productNameQuantityMap);
     }
 
-    private void processNonPromotionalItems(Map<ProductName, Quantity> productNameQuantityMap) {
+    private void putMissingPromotion(Map<ProductName, Quantity> productNameQuantityMap) {
         productNameQuantityMap.entrySet().stream()
                 .filter(entry -> service.checkEnoughStock(entry.getKey(), entry.getValue()))
                 .forEach(entry -> {

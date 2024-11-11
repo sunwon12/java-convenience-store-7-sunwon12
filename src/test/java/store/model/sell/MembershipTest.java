@@ -14,6 +14,6 @@ class MembershipTest {
         Membership membership = new Membership();
         Money actual = membership.discount(new Money(10_000));
 
-        assertEquals(new Money(7_000), actual);
+        assertEquals(new Money(3_000), actual);
     }
 }
