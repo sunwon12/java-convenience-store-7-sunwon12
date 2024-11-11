@@ -61,4 +61,11 @@ public class Stocks {
     public Map<ProductName, Stock> getStocks() {
         return stocks;
     }
+
+    public void addReleasedProductInStocks(Map.Entry<ProductName, ReleasedProduct> subtractProducts) {
+        ProductName productName = subtractProducts.getKey();
+        Stock stock = stocks.get(productName);
+        Stock newStock = stock.add(subtractProducts.getValue());
+        stocks.put(productName, newStock);
+    }
 }

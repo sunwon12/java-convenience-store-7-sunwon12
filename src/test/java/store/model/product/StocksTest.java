@@ -3,6 +3,7 @@ package store.model.product;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,6 +87,24 @@ class StocksTest {
         stocks.selectProduct(productName, new Quantity(5));
 
         assertEquals(new Quantity(5), stocks.getStocks().get(productName).getNormalQuantity());
+    }
+
+    @DisplayName("빼낸 재고를 다시 재고에 넣다")
+    @Test
+    void test7() {
+        Stocks stocks = new Stocks();
+        stocks.initialize(new CustomFileReader());
+        ProductName productName = new ProductName("콜라");
+        SimpleEntry<ProductName, ReleasedProduct> takeOutEntry = new SimpleEntry<>(productName,
+                new ReleasedProduct(new Product(productName, new Money(1000)),
+                        new Quantity(2), new Quantity(10), PromotionType.TWO_PLUS_ONE));
+        stocks.selectProduct(productName, new Quantity(20));
+
+        stocks.addReleasedProductInStocks(takeOutEntry);
+
+        assertEquals(productName, stocks.getStocks().get(productName));
+        assertEquals(new Quantity(2), stocks.getStocks().get(productName).getPromotionalQuantity());
+        assertEquals(new Quantity(10), stocks.getStocks().get(productName).getNormalQuantity());
     }
 
 }

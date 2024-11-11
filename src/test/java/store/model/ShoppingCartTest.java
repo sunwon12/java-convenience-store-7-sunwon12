@@ -80,4 +80,24 @@ class ShoppingCartTest {
 
         assertEquals(expected, totalMoney);
     }
+
+    @DisplayName("카트에서 상품을 뺀다")
+    @Test
+    void test5() {
+        ShoppingCart cart = new ShoppingCart();
+        Map<ProductName, ReleasedProduct> addProducts = new HashMap<>();
+        ProductName productName = new ProductName("콜라");
+        Money money = new Money(1000);
+        addProducts.put(productName, new ReleasedProduct(new Product(productName, money),
+                new Quantity(10), new Quantity(10), PromotionType.TWO_PLUS_ONE));
+        cart.add(addProducts);
+
+        Map<ProductName, ReleasedProduct> subtractProducts = new HashMap<>();
+        subtractProducts.put(productName, new ReleasedProduct(new Product(productName, money),
+                new Quantity(2), new Quantity(10), PromotionType.TWO_PLUS_ONE));
+        cart.subtract(subtractProducts.entrySet().iterator().next());
+
+        assertEquals(new Quantity(8), cart.getProducts().entrySet().iterator().next().getValue().promotionQuantity());
+        assertEquals(new Quantity(0), cart.getProducts().entrySet().iterator().next().getValue().normalQuantity());
+    }
 }

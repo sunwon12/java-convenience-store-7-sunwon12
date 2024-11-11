@@ -22,9 +22,8 @@ public class ShoppingCart {
         this.products = products;
     }
 
-    public ShoppingCart add(Map<ProductName, ReleasedProduct> newProducts) {
+    public void add(Map<ProductName, ReleasedProduct> newProducts) {
         newProducts.forEach(this::addProduct);
-        return this;
     }
 
     private void addProduct(ProductName name, ReleasedProduct newProduct) {
@@ -80,9 +79,9 @@ public class ShoppingCart {
     }
 
 
-    public void subtract(Entry<ProductName, ReleasedProduct> subtract1) {
-        ProductName productName = subtract1.getKey();
-        ReleasedProduct subtractProduct = subtract1.getValue();
+    public void subtract(Entry<ProductName, ReleasedProduct> subtractEntry) {
+        ProductName productName = subtractEntry.getKey();
+        ReleasedProduct subtractProduct = subtractEntry.getValue();
 
         ReleasedProduct releasedProduct = products.get(productName);
         ReleasedProduct newProduct = releasedProduct.subtract(subtractProduct);

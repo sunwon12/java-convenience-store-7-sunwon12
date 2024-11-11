@@ -69,4 +69,10 @@ public class Stock {
     public Product getProduct() {
         return product;
     }
+
+    public Stock add(ReleasedProduct releasedProduct) {
+        Quantity promotion = promotionalQuantity.add(releasedProduct.promotionQuantity());
+        Quantity normal = normalQuantity.subtract(releasedProduct.normalQuantity());
+        return new Stock(this.product, promotion, normal, this.promotionType)    ;
+    }
 }

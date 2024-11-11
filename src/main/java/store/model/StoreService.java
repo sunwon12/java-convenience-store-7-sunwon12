@@ -57,6 +57,7 @@ public class StoreService {
 
     public void subtractFromCart(Map.Entry<ProductName, ReleasedProduct> nonPromotions) {
         shoppingCart.subtract(nonPromotions);
+        stocks.addReleasedProductInStocks(nonPromotions);
     }
 
     public Money useMembership() {
