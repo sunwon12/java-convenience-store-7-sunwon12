@@ -1,8 +1,7 @@
-package store.model;
+package store.model.common;
 
 public enum ErrorMessage {
-    //    존재하지 않는 상품을 입력한 경우: [ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.
-//    구매 수량이 재고 수량을 초과한 경우: [ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.
+
     INVALID_PRODUCT_NAME_AND_COUNT("올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요."),
     INVALID_ETC("잘못된 입력입니다. 다시 입력해 주세요."),
     NOT_FOUND_FILE_PATH("파일 경로를 찾을 수 없습니다."),

@@ -1,6 +1,6 @@
 package store.model.product;
 
-import store.model.ErrorMessage;
+import store.model.common.ErrorMessage;
 
 class StockStatus {
 

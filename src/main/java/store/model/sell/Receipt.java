@@ -8,6 +8,7 @@ import store.model.product.Quantity;
 import store.model.product.ReleasedProduct;
 
 public class Receipt {
+
     private final Map<ProductName, ReleasedProduct> products;
     private final Money totalPrice;
     private final Map<ProductName, Quantity> promotionDiscountPrice;
@@ -62,8 +63,7 @@ public class Receipt {
                 .map(entry -> {
                     ProductName productName = entry.getKey();
                     Quantity freeQuantity = entry.getValue();
-                    Money price = products.get(productName).getPrice();
-
+                    Money price = products.get(entry.getKey()).getPrice();
                     return price.multiply(freeQuantity.getValue());
                 })
                 .reduce(Money.ZERO, Money::add);

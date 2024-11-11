@@ -2,13 +2,7 @@ package store.model.product;
 
 import java.util.Objects;
 
-public class ProductName {
-
-    private final String name;
-
-    public ProductName(String name) {
-        this.name = name;
-    }
+public record ProductName(String name) {
 
     @Override
     public boolean equals(Object o) {
@@ -18,13 +12,8 @@ public class ProductName {
         return name.equals(productName.name);
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hash(name);
-    }
-
-    public String getName() {
-        return name;
     }
 }

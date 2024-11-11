@@ -3,10 +3,10 @@ package store.view.outputView;
 import store.model.sell.Receipt;
 
 public class ReceiptDisplayer {
+
     private static final String TITLE_LINE = "==============W 편의점================";
     private static final String PROMOTION_LINE = "=============증      정===============";
     private static final String BOTTOM_LINE = "====================================";
-
     private static final String NAME_COLUMN_SPACE = "\t\t\t\t";  // 상품명 뒤 공백
     private static final String QUANTITY_COLUMN_SPACE = "\t\t  "; // 수량 뒤 공백
     private static final String PRICE_COLUMN_SPACE = "\n";        // 금액 뒤 공백
@@ -15,25 +15,10 @@ public class ReceiptDisplayer {
     public void display(Receipt receipt) {
         StringBuilder sb = new StringBuilder();
         appendHeader(sb);
-        int maxNameLength = calculateMaxNameLength(receipt);
-        appendPurchaseList(sb, receipt, maxNameLength);
-        appendPromotions(sb, receipt, maxNameLength);
-        appendTotalAmounts(sb, receipt, maxNameLength);
+        appendPurchaseList(sb, receipt, 5);
+        appendPromotions(sb, receipt, 5);
+        appendTotalAmounts(sb, receipt, 5);
         System.out.println(sb);
-    }
-
-    private int calculateMaxNameLength(Receipt receipt) {
-        int maxProductLength = receipt.getProducts().keySet().stream()
-                .mapToInt(name -> name.getName().length())
-                .max()
-                .orElse(0);
-
-        int maxPromotionLength = receipt.getPromotionDiscountPrice().keySet().stream()
-                .mapToInt(name -> name.getName().length())
-                .max()
-                .orElse(0);
-
-        return Math.max(maxProductLength, maxPromotionLength);
     }
 
     private void appendHeader(StringBuilder sb) {
@@ -45,7 +30,7 @@ public class ReceiptDisplayer {
 
     private void appendPurchaseList(StringBuilder sb, Receipt receipt, int maxNameLength) {
         receipt.getProducts().forEach((name, product) -> {
-            sb.append(String.format("%-" + maxNameLength + "s", name.getName()))
+            sb.append(String.format("%-" + maxNameLength + "s", name.name()))
                     .append(NAME_COLUMN_SPACE)
                     .append(product.getTotalQuantity().getValue())
                     .append(QUANTITY_COLUMN_SPACE)
@@ -58,7 +43,7 @@ public class ReceiptDisplayer {
         sb.append(PROMOTION_LINE).append(PRICE_COLUMN_SPACE);
         receipt.getPromotionDiscountPrice().forEach((name, quantity) -> {
             if (!quantity.isZero()) {
-                sb.append(String.format("%-" + maxNameLength + "s", name.getName()))
+                sb.append(String.format("%-" + maxNameLength + "s", name.name()))
                         .append(NAME_COLUMN_SPACE)
                         .append(quantity.getValue())
                         .append(PRICE_COLUMN_SPACE);

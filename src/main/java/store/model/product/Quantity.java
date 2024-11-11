@@ -1,9 +1,10 @@
 package store.model.product;
 
 import java.util.Objects;
-import store.model.ErrorMessage;
+import store.model.common.ErrorMessage;
 
 public class Quantity {
+
     public static final Quantity ZERO = new Quantity(0);
     private final int value;
 
@@ -33,16 +34,8 @@ public class Quantity {
         return new Quantity(this.value - other.value);
     }
 
-    public Quantity multiply(int multiplier) {
-        return new Quantity(this.value * multiplier);
-    }
-
     public boolean isLessThan(Quantity other) {
         return this.value < other.value;
-    }
-
-    public boolean isGreaterThan(Quantity other) {
-        return this.value > other.value;
     }
 
     public boolean isGreaterThanOrEqual(Quantity other) {
@@ -55,10 +48,6 @@ public class Quantity {
 
     public int getValue() {
         return value;
-    }
-
-    public Quantity min(Quantity other) {
-        return this.isLessThan(other) ? this : other;
     }
 
     @Override
@@ -88,13 +77,5 @@ public class Quantity {
 
     public Quantity remainder(int divisor) {
         return new Quantity(this.value % divisor);
-    }
-
-    public Quantity divide(int divisor) {
-        return new Quantity(this.value / divisor);
-    }
-
-    public boolean isMultipleOf(int number) {
-        return this.value % number == 0;
     }
 }

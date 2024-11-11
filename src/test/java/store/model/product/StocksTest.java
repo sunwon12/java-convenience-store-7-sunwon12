@@ -7,7 +7,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.model.CustomFileReader;
+import store.model.common.CustomFileReader;
 
 class StocksTest {
 

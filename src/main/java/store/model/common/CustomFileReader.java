@@ -1,4 +1,4 @@
-package store.model;
+package store.model.common;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,14 +21,17 @@ public class CustomFileReader {
     public StockDtos loadProducts() {
         try {
             Path path = Paths.get(PRODUCTS_FILE_PATH);
-            if (!Files.exists(path)) {
-                throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_FILE_PATH.getMessage());
-            }
+            validateProductFilePath(path);
             List<String> lines = Files.readAllLines(path);
-
             return StockDtos.from(parseProducts(lines));
         } catch (IOException e) {
             throw new IllegalArgumentException(ErrorMessage.FAILED_LOAD_PRODUCT_FILE.getMessage());
+        }
+    }
+
+    private void validateProductFilePath(Path path) {
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_FILE_PATH.getMessage());
         }
     }
 
@@ -57,13 +60,17 @@ public class CustomFileReader {
     public List<PromotionDto> loadPromotions() {
         try {
             Path path = Paths.get(PROMOTIONS_FILE_PATH);
-            if (!Files.exists(path)) {
-                throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_FILE_PATH.getMessage());
-            }
+            validatePromotionFilePath(path);
             List<String> lines = Files.readAllLines(path);
             return parsePromotions(lines);
         } catch (IOException e) {
             throw new IllegalArgumentException(ErrorMessage.FAILED_LOAD_PROMOTION_FILE.getMessage());
+        }
+    }
+
+    private static void validatePromotionFilePath(Path path) {
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException(ErrorMessage.NOT_FOUND_FILE_PATH.getMessage());
         }
     }
 

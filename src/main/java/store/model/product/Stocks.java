@@ -3,8 +3,8 @@ package store.model.product;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import store.model.CustomFileReader;
-import store.model.ErrorMessage;
+import store.model.common.CustomFileReader;
+import store.model.common.ErrorMessage;
 import store.model.dto.OrderProductInfoRequest;
 import store.model.dto.StockDtos;
 

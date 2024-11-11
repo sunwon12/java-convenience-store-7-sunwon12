@@ -7,7 +7,6 @@ public class StockDisplayer {
 
     private static final String PRODUCT_PREFIX = "- ";
 
-
     public void display(ProductName productName, Stock stock) {
         StringBuilder sb = new StringBuilder();
 
@@ -33,7 +32,7 @@ public class StockDisplayer {
     private StringBuilder createBasicInfo(ProductName productName) {
         return new StringBuilder()
                 .append(PRODUCT_PREFIX)
-                .append(productName.getName())
+                .append(productName.name())
                 .append(" ");
     }
 

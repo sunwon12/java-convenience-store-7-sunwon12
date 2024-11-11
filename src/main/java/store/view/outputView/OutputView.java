@@ -8,6 +8,7 @@ public class OutputView {
     private final WelcomeDisplayer welcomeDisplayer;
     private final StocksDisplayer stocksDisplayer;
     private final ReceiptDisplayer receiptDisplayer;
+
     public OutputView() {
         this.welcomeDisplayer = new WelcomeDisplayer();
         this.stocksDisplayer = new StocksDisplayer(new StockDisplayer());
@@ -24,6 +25,6 @@ public class OutputView {
     }
 
     public void showException(String detailedMessage) {
-        System.out.println("\n"+detailedMessage);
+        System.out.println("\n" + detailedMessage);
     }
 }

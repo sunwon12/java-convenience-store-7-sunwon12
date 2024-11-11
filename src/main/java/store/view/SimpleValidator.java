@@ -1,6 +1,6 @@
 package store.view;
 
-import store.model.ErrorMessage;
+import store.model.common.ErrorMessage;
 
 public class SimpleValidator {
 

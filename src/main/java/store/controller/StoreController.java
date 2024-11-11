@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
-import store.model.ShoppingCart;
-import store.model.StoreService;
+import store.model.product.ShoppingCart;
+import store.model.service.StoreService;
 import store.model.dto.OrderProductInfoRequest;
 import store.model.product.Money;
 import store.model.product.ProductName;
@@ -55,15 +55,19 @@ public class StoreController {
 
     private void putMissingPromotion(Map<ProductName, ReleasedProduct> productNameQuantityMap) {
         productNameQuantityMap.entrySet().stream()
-                .filter(entry -> service.isBetweenPromotionDate(entry.getValue().promotionType(), DateTimes.now()))
-                .filter(entry -> service.checkEnoughPromotionStock(entry.getKey(), entry.getValue().promotionQuantity()))
+                .filter(entry -> checkPromotionAvailable(entry))
                 .forEach(entry -> {
-                    String response = inputView.readMissingPromotionResponse(
-                            entry.getKey().getName(),
+                    String response = inputView.readMissingPromotionResponse(entry.getKey().name(),
                             entry.getValue().promotionQuantity().getValue());
                     if (response.equals("Y")) {
                         service.putMissingInShoppingCart(entry.getKey(), entry.getValue().promotionQuantity());
-                    }});
+                    }
+                });
+    }
+
+    private boolean checkPromotionAvailable(Entry<ProductName, ReleasedProduct> entry) {
+        return service.isBetweenPromotionDate(entry.getValue().promotionType(), DateTimes.now()) &&
+                service.checkEnoughPromotionStock(entry.getKey(), entry.getValue().promotionQuantity());
     }
 
     private void purchase() {
@@ -76,9 +80,9 @@ public class StoreController {
     private void readPurchaseWithoutPromotion() {
         Map<ProductName, ReleasedProduct> nonPromotions = service.calculateNonPromotionQuantity();
         for (Map.Entry<ProductName, ReleasedProduct> entry : nonPromotions.entrySet()) {
-            if(service.isBetweenPromotionDate(entry.getValue().promotionType(), DateTimes.now())) {
+            if (service.isBetweenPromotionDate(entry.getValue().promotionType(), DateTimes.now())) {
                 String response = inputView.readPurchaseWithoutPromotionResponse(
-                        entry.getKey().getName(),
+                        entry.getKey().name(),
                         entry.getValue().getTotalQuantity().getValue());
                 subtractFromCart(entry, response);
             }

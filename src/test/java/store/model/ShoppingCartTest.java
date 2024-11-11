@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import store.model.product.ShoppingCart;
 import store.model.product.Money;
 import store.model.product.Product;
 import store.model.product.ProductName;

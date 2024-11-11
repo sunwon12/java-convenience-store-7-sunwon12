@@ -1,14 +1,10 @@
-package store.model;
+package store.model.product;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import store.model.product.Money;
-import store.model.product.ProductName;
-import store.model.product.Quantity;
-import store.model.product.ReleasedProduct;
 
 public class ShoppingCart {
 

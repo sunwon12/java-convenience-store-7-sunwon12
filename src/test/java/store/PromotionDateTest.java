@@ -7,7 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.model.CustomFileReader;
+import store.model.common.CustomFileReader;
+import store.model.common.PromotionDate;
 import store.model.product.PromotionType;
 
 class PromotionDateTest {
