@@ -3,8 +3,11 @@ package store.model.product;
 public record ReleasedProduct(Product product, Quantity promotionQuantity,
                               Quantity normalQuantity, PromotionType promotionType) {
 
-    public Quantity getMissingPromotion() {
-        return promotionType.calculateFreeQuantity(promotionQuantity);
+    public ReleasedProduct getMissingPromotion() {
+        return new ReleasedProduct(this.product,
+                promotionType.calculateFreeQuantity(promotionQuantity),
+                this.normalQuantity,
+                this.promotionType);
     }
 
     public Quantity getCantPromotionQuantity() {
@@ -27,10 +30,14 @@ public record ReleasedProduct(Product product, Quantity promotionQuantity,
     }
 
     public Quantity getFreePromotionQuantity() {
-       return promotionType.getFreePromotionQuantity(promotionQuantity);
+        return promotionType.getFreePromotionQuantity(promotionQuantity);
     }
 
     public Money getPrice() {
         return product.getPrice();
+    }
+
+    public boolean isPromotionQuantityZero() {
+        return promotionQuantity.isZero();
     }
 }

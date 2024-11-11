@@ -36,12 +36,12 @@ public class ShoppingCart {
                 ));
     }
 
-    public Map<ProductName, Quantity> checkMissingPromotion() {
-        Map<ProductName, Quantity> returnMap = new HashMap<>();
+    public Map<ProductName, ReleasedProduct> checkMissingPromotion() {
+        Map<ProductName, ReleasedProduct> returnMap = new HashMap<>();
         for (Map.Entry<ProductName, ReleasedProduct> entry : products.entrySet()) {
-            Quantity quantity = entry.getValue().getMissingPromotion();
-            if (!quantity.isZero()) {
-                returnMap.put(entry.getKey(), quantity);
+            ReleasedProduct missingPromotion = entry.getValue().getMissingPromotion();
+            if (!missingPromotion.isPromotionQuantityZero()) {
+                returnMap.put(entry.getKey(), missingPromotion);
             }
         }
         return returnMap;

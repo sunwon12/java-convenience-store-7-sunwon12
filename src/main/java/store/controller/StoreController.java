@@ -1,14 +1,15 @@
 package store.controller;
 
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 import store.model.ShoppingCart;
 import store.model.StoreService;
 import store.model.dto.OrderProductInfoRequest;
 import store.model.product.Money;
 import store.model.product.ProductName;
-import store.model.product.Quantity;
 import store.model.product.ReleasedProduct;
 import store.model.product.Stocks;
 import store.model.sell.Receipt;
@@ -31,6 +32,7 @@ public class StoreController {
     public void process() {
         String response;
         service.initiallizeStocks();
+        service.initiallizePromotionDate();
         do {
             attempt(() -> showStocks());
             attempt(() -> putInCart());
@@ -46,21 +48,22 @@ public class StoreController {
 
     private void putInCart() {
         List<OrderProductInfoRequest> requests = inputView.readProductNameAndCount();
-        Map<ProductName, Quantity> productNameQuantityMap = service.putInShoppingCart(new ShoppingCart(), requests);
+        Map<ProductName, ReleasedProduct> productNameQuantityMap = service.putInShoppingCart(new ShoppingCart(),
+                requests);
         putMissingPromotion(productNameQuantityMap);
     }
 
-    private void putMissingPromotion(Map<ProductName, Quantity> productNameQuantityMap) {
+    private void putMissingPromotion(Map<ProductName, ReleasedProduct> productNameQuantityMap) {
         productNameQuantityMap.entrySet().stream()
-                .filter(entry -> service.checkEnoughPromotionStock(entry.getKey(), entry.getValue()))
+                .filter(entry -> service.isBetweenPromotionDate(entry.getValue().promotionType(), DateTimes.now()))
+                .filter(entry -> service.checkEnoughPromotionStock(entry.getKey(), entry.getValue().promotionQuantity()))
                 .forEach(entry -> {
                     String response = inputView.readMissingPromotionResponse(
                             entry.getKey().getName(),
-                            entry.getValue().getValue());
+                            entry.getValue().promotionQuantity().getValue());
                     if (response.equals("Y")) {
-                        service.putMissingInShoppingCart(entry.getKey(), entry.getValue());
-                    }
-                });
+                        service.putMissingInShoppingCart(entry.getKey(), entry.getValue().promotionQuantity());
+                    }});
     }
 
     private void purchase() {
@@ -73,12 +76,18 @@ public class StoreController {
     private void readPurchaseWithoutPromotion() {
         Map<ProductName, ReleasedProduct> nonPromotions = service.calculateNonPromotionQuantity();
         for (Map.Entry<ProductName, ReleasedProduct> entry : nonPromotions.entrySet()) {
-            String response = inputView.readPurchaseWithoutPromotionResponse(
-                    entry.getKey().getName(),
-                    entry.getValue().getTotalQuantity().getValue());
-            if (response.equals("N")) {
-                service.subtractFromCart(entry);
+            if(service.isBetweenPromotionDate(entry.getValue().promotionType(), DateTimes.now())) {
+                String response = inputView.readPurchaseWithoutPromotionResponse(
+                        entry.getKey().getName(),
+                        entry.getValue().getTotalQuantity().getValue());
+                subtractFromCart(entry, response);
             }
+        }
+    }
+
+    private void subtractFromCart(Entry<ProductName, ReleasedProduct> entry, String response) {
+        if (response.equals("N")) {
+            service.subtractFromCart(entry);
         }
     }
 

@@ -44,7 +44,6 @@ public enum PromotionType {
         this.freePromotionQuantityCalculator = freePromotionQuantityCalculator;
     }
 
-
     public Quantity calculateFreeQuantity(Quantity quantity) {
         if (this == NONE || quantity.isZero()) {
             return Quantity.ZERO;
